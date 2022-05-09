@@ -1,0 +1,2 @@
+# Smart_Robot_IA
+Se tiene un robot cuyo objetivo consiste en encontrar 2 ítems que están ocultos en un espacio de 10x10 casillas. En el ambiente se tienen 2 naves que el robot puede usar y que facilitan la exploración del lugar pero también existe un elemento hostil para el agente, son casillas con aceite que afectan el estado del robot. Considere la siguiente abstracción del mundo representado por medio de una cuadrícula de 10x10.
