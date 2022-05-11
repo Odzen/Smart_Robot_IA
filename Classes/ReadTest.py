@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 """
-Created on Thu Apr 28 23:38:42 2022
-
-@author: Juan Sebastian Velasquez
+Class ReadTest
 """
 
 
