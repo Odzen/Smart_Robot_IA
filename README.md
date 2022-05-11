@@ -1,2 +1,6 @@
 # Smart_Robot_IA
-Se tiene un robot cuyo objetivo consiste en encontrar 2 ítems que están ocultos en un espacio de 10x10 casillas. En el ambiente se tienen 2 naves que el robot puede usar y que facilitan la exploración del lugar pero también existe un elemento hostil para el agente, son casillas con aceite que afectan el estado del robot. Considere la siguiente abstracción del mundo representado por medio de una cuadrícula de 10x10.
+The smart robot is an agent whose objective is to find 2 items that are
+hidden in a maze of 10x10 squares. In the environment, there are 2 ships 
+that the robot can use, that facilitate the exploration of the place. 
+But there is also a hostile element for the agent, there are places with 
+oil that affect the state of the robot.
