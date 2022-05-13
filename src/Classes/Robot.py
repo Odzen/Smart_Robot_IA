@@ -1,9 +1,9 @@
 """
-Class for Smart Robot
+Class for Smart Robot, simple agent
 """
 
-import Maze
-import Position
+from Classes import Maze
+from Classes import Position
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -158,8 +158,6 @@ class Robot1(object):
             print("Try again")
             raise Exception("Error: "+str(error))
         
-
-        
 # Agent 1
 class Robot2(Robot1):
     def __init__(self, position, maze):
@@ -167,7 +165,7 @@ class Robot2(Robot1):
         self.previousX = position.getX()
         self.previousY = position.getY()
         self.previuosPositions = []
-        self.mazePreviuousPositions = Maze(self.maze.getWidth(), self.maze.getHeight())
+        self.mazePreviuousPositions = Maze.Maze(self.maze.getWidth(), self.maze.getHeight())
     
     def previousPosition(self):
         return "The Robot was here: ["+str(self.previousX)+" , " + str(self.previousY) +  "]"

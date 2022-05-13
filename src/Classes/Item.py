@@ -3,7 +3,7 @@ Class Item
 """
 
 # Recieves a Maze and an initial position of the Item
-class Oil(object):
+class Item(object):
     def __init__(self, position, maze):
         self.position = position
         self.maze = maze

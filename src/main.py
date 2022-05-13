@@ -5,12 +5,23 @@ Created on Thu Apr 28 23:48:50 2022
 @author: Juan Sebastian Velasquez
 """
 
-import readFile
-import agents
-import ia_algorithms
-# import signal
+from Classes import Item
+from Classes import Maze
+from Classes import Oil
+from Classes import *
+from Classes import Robot
+from Classes import Ship
+from Classes import Position 
+from SearchAlgorithms.InformedSearch import *
+from SearchAlgorithms.UninformedSearch import *
+from SearchAlgorithms import ia_algorithms
+from ReadTest import *
 
-Test = 4
+#import sys
+#sys.path.append(1, '/SearchAlgorithms')
+#import ia_algorithms
+
+Test = 1
 MaxSteps = 15
 t = 2 # 2 second
 
@@ -18,48 +29,55 @@ t = 2 # 2 second
 
 def transformData(width, height, lines):
     
-    mainMaze = agents.Maze(width,height)
+    mainMaze = Maze.Maze(width, height)
+    items = []
+    oils = []
     
     for x in range(len(lines)):
         for y in range(len(lines)):
             if lines[x][y] == 2:
-                cheesePosition = agents.Position(x,y)
-                cheese = agents.Cheese(cheesePosition,mainMaze)
+                robotPosition = Position.Position(x, y)
+                robot = Robot.Robot2(robotPosition, mainMaze)
             if lines[x][y] == 3:
-                mousePosition = agents.Position(x,y)
-                mouse = agents.MouseAgent2(mousePosition,mainMaze)
-            mainMaze.setElement(agents.Position(x,y), lines[x][y])
+                firstShipPosition = Position.Position(x, y)
+                firstShip = Ship.Ship(firstShipPosition, mainMaze)
+            if lines[x][y] == 4:
+                secondShipPosition = Position.Position(x, y)
+                secondShip = Ship.Ship(secondShipPosition, mainMaze)
+            if lines[x][y] == 5:
+                itemPosition = Position.Position(x, y)
+                item = Item.Item(itemPosition, mainMaze)
+                items.append(item)
+            if lines[x][y] == 6:
+                oilPosition = Position.Position(x, y)
+                oil = Oil.Oil(oilPosition, mainMaze)
+                oils.append(oil)
+            mainMaze.setElement(Position.Position(x,y), lines[x][y])
     
-    return mouse, mainMaze, cheese
+    return robot, firstShip, secondShip, items, oils, mainMaze 
 
 def main():
-
-    width, height, lines = readFile.input(Test)
-    mouse, mainMaze, cheese = transformData(width, height, lines)
     
+    readWrite = ReadAndWrite(Test)
+    width, height, lines = readWrite.input()
+    robot, firstShip, secondShip, items, oils, mainMaze = transformData(width, height, lines)
+    
+    ## TEST set up Maze
+    print(robot) # Should be in [2,2] according to the test
+    print(firstShip) # Should be in [5,9]
+    print(secondShip) # Should be in [0,8]
+    for item in items: # Should be in [0,5] and [9,9]
+        print(item) 
+    for oil in oils: # Should be in [2,3],[2,4], [3,1],[3,9],[4,1], [4,9], [5,1], [6,1], [9,4],[9,5],[9,6]
+        print(oil) 
+    
+    
+    ## DONT USE, THEY'RE NOT WORKING PROPERLY YET
     # IA Agent 1
-    #ia_algorithms.runIAAgent1(mouse, mainMaze, cheese, MaxSteps, t)
+    #ia_algorithms.runIAAgent1()
     
     # IA Agent 2
-    ia_algorithms.runIAAgent2(mouse, mainMaze, cheese, MaxSteps, t)
-    
-    """
-    It seems signal doesn't work in windows'
-    
-    signal.signal(signal.SIGALRM, signal_handler)
-    signal.alarm(10)   # Ten seconds
-    try:
-        ia_algorithms.runIA(mouse, mainMaze, cheese)
-    except Exception as e:
-        print("Timed out!")
-    """
+    #ia_algorithms.runIAAgent2()
 
-        
-"""
-def signal_handler(signum, frame):
-    raise Exception("Timed out!")
-"""
-
-    
 main()
 
