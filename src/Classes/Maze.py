@@ -9,7 +9,7 @@ Class Maze, grid (NxM)
 # 3 represents ship 1
 # 4 represents ship 2
 # 5 represents an item
-# 5 represents an oil
+# 6 represents an oil
 class Maze(object):
     def __init__(self, width, height):
         self.width = width
