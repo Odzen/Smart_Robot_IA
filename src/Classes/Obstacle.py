@@ -9,4 +9,4 @@ class Obstacle(object):
         self.maze = maze
         
     def __str__(self):
-        return "The Obstacle is here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        return "There is an Obstacle here ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     

@@ -24,5 +24,8 @@ class Ship(object):
     def setFuel(self, newFuel):
         self.fuel = newFuel
     
+    def decreaseFuelByOne(self):
+        self.fuel -= 1
+    
     def __str__(self):
-        return "The Ship is here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        return "There is a Ship here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]" + " with " + str(self.getFuel()) + " of fuel"   

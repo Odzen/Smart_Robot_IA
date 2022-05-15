@@ -2,8 +2,10 @@
 Class for Smart Robot, simple agent
 """
 
-from Classes import Maze
-from Classes import Position
+#from .Maze import Maze
+from .Position import Position 
+from .Obstacle import Obstacle
+from .Item import Item
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -11,7 +13,8 @@ class Robot1(object):
         self.maze = maze
         self.position = position
         self.foundItem = False
-        maze.setElement(position,2)
+        self.collectedItems = 0
+        #maze.setElement(position,2)
     
     def getRobotPosition(self):
         """
@@ -20,34 +23,52 @@ class Robot1(object):
         """
         return self.position
     
+    def getCollectedItems(self):
+        return self.collectedItems
+    
+    def setCollectedItems(self, newItems):
+        self.collectedItems = newItems
+        
+    def increaseByOneCollectedItems(self):
+        self.collectedItems += 1
+        
+    def decreaseByOneCollectedItems(self):
+        self.collectedItems -= 1
+    
     def __str__(self):
-        return "The Robot is here: ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"
+        return "There is a Robot here: ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"
     
     def hadfoundItem(self):
         return self.foundItem
     
-    def isSomethingUp(self):
+    def isObstacleUp(self):
         nextPosition = Position(self.position.getX()-1, self.position.getY())
-        if(self.maze.getElement(nextPosition) == 1 or self.maze.getElement(nextPosition) == 5):
-            return True
-        else:
-            return False
-    def isSomethingDown(self):
-        nextPosition = Position(self.position.getX()+1, self.position.getY())
-        if(self.maze.getElement(nextPosition) ==1 or self.maze.getElement(nextPosition) == 5):
+        typeNextPositionElement = type(self.maze.getElement(nextPosition))
+        if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
         
-    def isSomethingOnLeft(self):
-        nextPosition = Position(self.position.getX(), self.position.getY()-1)
-        if(self.maze.getElement(nextPosition) == 1 or self.maze.getElement(nextPosition) == 5):
+    def isObstacleDown(self):
+        nextPosition = Position(self.position.getX()+1, self.position.getY())
+        typeNextPositionElement = type(self.maze.getElement(nextPosition))
+        if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
-    def isSomethingOnRight(self):
+        
+    def isObstacleOnLeft(self):
+        nextPosition = Position(self.position.getX(), self.position.getY()-1)
+        typeNextPositionElement = type(self.maze.getElement(nextPosition))
+        if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
+            return True
+        else:
+            return False
+        
+    def isObstacleOnRight(self):
         nextPosition = Position(self.position.getX(), self.position.getY()+1)
-        if(self.maze.getElement(nextPosition) == 1 or self.maze.getElement(nextPosition) == 5):
+        typeNextPositionElement = type(self.maze.getElement(nextPosition))
+        if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
@@ -57,8 +78,8 @@ class Robot1(object):
         lookDown = Position(self.position.getX()+1, self.position.getY())
         lookRight = Position(self.position.getX(), self.position.getY()+1)
         lookLeft = Position(self.position.getX(), self.position.getY()-1)
-        if(self.maze.getElement(lookRight) == 2 or self.maze.getElement(lookLeft) == 2
-           or self.maze.getElement(lookDown) == 2 or self.maze.getElement(lookUp) == 2):
+        if(type(self.maze.getElement(lookRight)) == Item or type(self.maze.getElement(lookLeft)) == Item
+           or type(self.maze.getElement(lookDown)) == Item or type(self.maze.getElement(lookUp)) == Item):
             return True
         else:
             return False
@@ -73,15 +94,16 @@ class Robot1(object):
         
     def moveLeft(self):
         try:
-            if(not(self.isSomethingOnLeft())):
+            if(not(self.isObstacleOnLeft())):
                 lookLeft = Position(self.position.getX(), self.position.getY()-1)
-                if(self.maze.getElement(lookLeft) == 2):
+                if(type(self.maze.getElement(lookLeft)) == Item):
                     self.foundItem = True
-                    print("Found Item, Congrats!!")
+                    self.increaseByOneCollectedItems()
+                    print("Found One Item, Congrats!!")
                 self.maze.setElement(self.position, 0) 
                 newY = self.position.getY()-1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
-                self.maze.setElement(newPosition, 3)
+                self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Left")
                 if(self.smellItem()):
@@ -94,15 +116,16 @@ class Robot1(object):
     
     def moveUp(self):
         try:
-            if(not (self.isSomethingUp())):
+            if(not (self.isObstacleUp())):
                 lookUp = Position(self.position.getX()-1, self.position.getY())
-                if(self.maze.getElement(lookUp) == 2):
+                if(type(self.maze.getElement(lookUp)) == Item):
                     self.foundItem = True
-                    print("Found Item, Congrats!!")
+                    self.increaseByOneCollectedItems()
+                    print("Found One Item, Congrats!!")
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()-1
                 newPosition = self.position.setPosition(newX , self.position.getY())
-                self.maze.setElement(newPosition, 3)
+                self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Up")
                 if(self.smellItem()):
@@ -117,15 +140,16 @@ class Robot1(object):
             
     def moveDown(self):
         try:
-            if(not(self.isSomethingDown())):
+            if(not(self.isObstacleDown())):
                 lookDown = Position(self.position.getX()+1, self.position.getY())
-                if(self.maze.getElement(lookDown) == 2):
+                if(type(self.maze.getElement(lookDown)) == Item):
                     self.foundItem = True
-                    print("Found Item, Congrats!!")
+                    self.increaseByOneCollectedItems()
+                    print("Found One Item, Congrats!!")
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()+1
                 newPosition = self.position.setPosition(newX , self.position.getY())
-                self.maze.setElement(newPosition, 3)
+                self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Down")
                 if(self.smellItem()):
@@ -139,15 +163,16 @@ class Robot1(object):
             
     def moveRight(self):
         try:
-            if(not(self.isSomethingOnRight())):
+            if(not(self.isObstacleOnRight())):
                 lookRight = Position(self.position.getX(), self.position.getY()+1)
-                if(self.maze.getElement(lookRight) == 2):
+                if(type(self.maze.getElement(lookRight)) == Item):
                     self.foundItem = True
-                    print("Found Item, Congrats!!")
+                    self.increaseByOneCollectedItems()
+                    print("Found One Item, Congrats!!")
                 self.maze.setElement(self.position, 0)
                 newY = self.position.getY()+1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
-                self.maze.setElement(newPosition, 3)
+                self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Right")
                 if(self.smellItem()):
@@ -166,7 +191,7 @@ class Robot2(Robot1):
         self.previousX = position.getX()
         self.previousY = position.getY()
         self.previuosPositions = []
-        self.mazePreviuousPositions = Maze.Maze(self.maze.getWidth(), self.maze.getHeight())
+        #self.mazePreviuousPositions = Maze(self.maze.getWidth(), self.maze.getHeight())
     
     def previousPosition(self):
         return "The Robot was here: ["+str(self.previousX)+" , " + str(self.previousY) +  "]"

@@ -2,6 +2,17 @@
 Class Maze, grid (NxM)
 """
 
+
+from .Item import Item
+from .Oil import Oil
+from .Robot import *
+from .Obstacle import Obstacle
+from .OpenCell import OpenCell
+from .Ship import Ship
+from .Position import Position 
+
+
+
 # Creat only the maze with  initially in each position
 # 0 represents an open path
 # 1 represents an obstacle
@@ -42,15 +53,30 @@ class Maze(object):
     # 7 is a case when is trying to access to a position outside from the maze
     def getElement(self, position):
         if(position.getX() < 0 or position.getY() < 0):
-            result = self.OUT
+            return self.OUT
         else:
             assert(type(position.getX()) == int and type(position.getY()) == int)
-            result = 1
             try:
-                result = self.maze[position.getX()][position.getY()]
+                numberPosition = self.maze[position.getX()][position.getY()]
+                if( numberPosition == 0):
+                    return OpenCell(position, self)
+                if( numberPosition == 1):
+                    return Obstacle(position, self)
+                if( numberPosition == 2):
+                    return Robot1(position, self)
+                    #return Robot2(position, self)
+                if( numberPosition == 3):
+                    return Ship(position, self, 10)
+                if( numberPosition == 4):
+                    return Ship(position, self, 20)
+                if( numberPosition == 5):
+                    return Item(position, self)
+                if( numberPosition == 6):
+                    return Oil(position, self)
+                
+            # If I'm looking outside of the Maze
             except IndexError as e:
-                result = self.OUT
-        return result
+                return self.OUT
     
     def isPositionInMaze(self, pos):
         """

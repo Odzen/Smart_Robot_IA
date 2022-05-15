@@ -6,21 +6,21 @@ Created on Fri Apr 29 00:15:50 2022
 """
 import time
 
-def runIAAgent1(mouse, mainMaze, cheese, maxSteps, t):
+def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
     """
 
     Parameters
     ----------
     Parameters
     ----------
-    mouse : MouseAgent1
+    robot : RobotAgent1
         Agent.
     mainMaze : Maze
         Grid.
-    cheese : Cheese
-        Cheese, goal.
+    item : item
+        item, goal.
     maxSteps : int
-        maximun steps that the mouse is allowed to find the cheese.
+        maximun steps that the robot is allowed to find the item.
     t : int
         time to sleep after each step.
 
@@ -32,86 +32,86 @@ def runIAAgent1(mouse, mainMaze, cheese, maxSteps, t):
     print("Initial Maze:")
     print(mainMaze)
     steps = 1
-    while(not(mouse.hadfoundCheese()) and steps <= maxSteps):
+    while(robot.getCollectedItems() != numberItems and steps <= maxSteps):
         print("Step: ", steps)
-        if((not (mouse.isSomethingOnLeft())) and (not (mouse.isSomethingUp())) and (not (mouse.isSomethingOnRight())) and (not(mouse.isSomethingDown()))):
+        if((not (robot.isObstacleOnLeft())) and (not (robot.isObstacleUp())) and (not (robot.isObstacleOnRight())) and (not(robot.isObstacleDown()))):
             print("Caso - 1")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and (not (mouse.isSomethingUp())) and (not (mouse.isSomethingOnRight())) and mouse.isSomethingDown()):
+        elif((not (robot.isObstacleOnLeft())) and (not (robot.isObstacleUp())) and (not (robot.isObstacleOnRight())) and robot.isObstacleDown()):
             print("Caso - 2")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and (not (mouse.isSomethingUp())) and mouse.isSomethingOnRight() and (not(mouse.isSomethingDown()))):
+        elif((not (robot.isObstacleOnLeft())) and (not (robot.isObstacleUp())) and robot.isObstacleOnRight() and (not(robot.isObstacleDown()))):
             print("Caso - 3")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and (not (mouse.isSomethingUp())) and mouse.isSomethingOnRight() and mouse.isSomethingDown()):
+        elif((not (robot.isObstacleOnLeft())) and (not (robot.isObstacleUp())) and robot.isObstacleOnRight() and robot.isObstacleDown()):
             print("Caso - 4")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and mouse.isSomethingUp() and (not(mouse.isSomethingOnRight())) and (not(mouse.isSomethingDown()))):
+        elif((not (robot.isObstacleOnLeft())) and robot.isObstacleUp() and (not(robot.isObstacleOnRight())) and (not(robot.isObstacleDown()))):
             print("Caso - 5")
-            mouse.moveLeft()
+            robot.moveLeft()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and mouse.isSomethingUp() and (not(mouse.isSomethingOnRight()))and mouse.isSomethingDown()):
+        elif((not (robot.isObstacleOnLeft())) and robot.isObstacleUp() and (not(robot.isObstacleOnRight()))and robot.isObstacleDown()):
             print("Caso - 6")
-            mouse.moveRight()
+            robot.moveRight()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and mouse.isSomethingUp() and mouse.isSomethingOnRight() and (not(mouse.isSomethingDown()))):
+        elif((not (robot.isObstacleOnLeft())) and robot.isObstacleUp() and robot.isObstacleOnRight() and (not(robot.isObstacleDown()))):
             print("Caso - 7")
-            mouse.moveLeft()
+            robot.moveLeft()
             steps+=1
             
-        elif((not (mouse.isSomethingOnLeft())) and mouse.isSomethingUp() and mouse.isSomethingOnRight() and mouse.isSomethingDown()):
+        elif((not (robot.isObstacleOnLeft())) and robot.isObstacleUp() and robot.isObstacleOnRight() and robot.isObstacleDown()):
             print("Caso - 8")
-            mouse.moveLeft()
+            robot.moveLeft()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and (not (mouse.isSomethingUp())) and (not(mouse.isSomethingOnRight())) and (not(mouse.isSomethingDown()))):
+        elif(robot.isObstacleOnLeft() and (not (robot.isObstacleUp())) and (not(robot.isObstacleOnRight())) and (not(robot.isObstacleDown()))):
             print("Caso - 9")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and (not (mouse.isSomethingUp())) and (not(mouse.isSomethingOnRight())) and mouse.isSomethingDown()):
+        elif(robot.isObstacleOnLeft() and (not (robot.isObstacleUp())) and (not(robot.isObstacleOnRight())) and robot.isObstacleDown()):
             print("Caso - 10")
-            mouse.moveRight()
+            robot.moveRight()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and (not (mouse.isSomethingUp())) and mouse.isSomethingOnRight() and (not(mouse.isSomethingDown()))):
+        elif(robot.isObstacleOnLeft() and (not (robot.isObstacleUp())) and robot.isObstacleOnRight() and (not(robot.isObstacleDown()))):
             print("Caso - 11")
-            mouse.moveDown()
+            robot.moveDown()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and (not (mouse.isSomethingUp())) and mouse.isSomethingOnRight() and mouse.isSomethingDown()):
+        elif(robot.isObstacleOnLeft() and (not (robot.isObstacleUp())) and robot.isObstacleOnRight() and robot.isObstacleDown()):
             print("Caso - 12")
-            mouse.moveUp()
+            robot.moveUp()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and mouse.isSomethingUp() and (not(mouse.isSomethingOnRight())) and (not(mouse.isSomethingDown()))):
+        elif(robot.isObstacleOnLeft() and robot.isObstacleUp() and (not(robot.isObstacleOnRight())) and (not(robot.isObstacleDown()))):
             print("Caso - 13")
-            mouse.moveRight()
+            robot.moveRight()
             steps+=1
             
-        elif(mouse.isSomethingOnLeft() and mouse.isSomethingUp() and (not(mouse.isSomethingOnRight())) and mouse.isSomethingDown()):
+        elif(robot.isObstacleOnLeft() and robot.isObstacleUp() and (not(robot.isObstacleOnRight())) and robot.isObstacleDown()):
             print("Caso - 14")
-            mouse.moveRight()
+            robot.moveRight()
             steps+=1
             
         else:
-        #(mouse.isSomethingOnLeft() and mouse.isSomethingUp() and mouse.isSomethingOnRight() and (not(mouse.isSomethingDown()))):
+        #(robot.isObstacleOnLeft() and robot.isObstacleUp() and robot.isObstacleOnRight() and (not(robot.isObstacleDown()))):
             print("Caso - 15")
-            mouse.moveDown()
+            robot.moveDown()
             steps+=1
         
         if steps > maxSteps:
-            print("Your Mouse took too long!! Maybe there is no way he can find the cheese :(")
+            print("Your robot took too long!! Maybe there is no way he can find the items :(")
         
         print(mainMaze)
         time.sleep(t)

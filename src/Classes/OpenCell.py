@@ -12,6 +12,8 @@ class OpenCell(object):
     
     def getCost(self):
         return self.cost
-        
+       
+    
     def __str__(self):
-        return "The Open Cell is here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        return "There is an Open Cell here ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        

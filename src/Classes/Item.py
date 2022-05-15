@@ -10,4 +10,4 @@ class Item(object):
         #maze.setElement(position,5)
         
     def __str__(self):
-        return "The Item is here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        return "There is an Item here ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     

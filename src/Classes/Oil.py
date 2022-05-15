@@ -19,4 +19,4 @@ class Oil(object):
         self.cost = newCost
         
     def __str__(self):
-        return "The Oil is here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     
+        return "There is an Oil here["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     

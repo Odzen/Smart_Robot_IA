@@ -4,7 +4,7 @@ Created on Thu Apr 28 23:48:50 2022
 
 @author: Juan Sebastian Velasquez
 """
-
+import inspect
 from Classes import Item
 from Classes import Maze
 from Classes import Oil
@@ -22,9 +22,6 @@ from ReadTest import *
 #sys.path.append(1, '/SearchAlgorithms')
 #import ia_algorithms
 
-Test = 1
-MaxSteps = 15
-t = 2 # 2 second
 
 
 
@@ -47,7 +44,7 @@ def transformData(width, height, lines):
             # Robot
             if lines[x][y] == 2:
                 robotPosition = Position.Position(x, y)
-                robot = Robot.Robot2(robotPosition, mainMaze)
+                robot = Robot.Robot1(robotPosition, mainMaze)
             # Ship 1, fuel for 10 movements
             if lines[x][y] == 3:
                 firstShipPosition = Position.Position(x, y)
@@ -72,28 +69,31 @@ def transformData(width, height, lines):
 
 def main():
     
+    Test = 1
+    MaxSteps = 15
+    t = 2 # 2 seconds
+    
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
     robot, firstShip, secondShip, items, oils, mainMaze = transformData(width, height, lines)
+    numberItems = len(items)
+    numberOils = len(oils)
     
-    ## TEST set up Maze
-    print(robot) # Should be in [2,2] according to the test
-    print(firstShip) # Should be in [5,9]
-    print(secondShip) # Should be in [0,8]
-    for item in items: # Should be in [0,5] and [9,9]
-        print(item) 
-    for oil in oils: # Should be in [2,3],[2,4], [3,1],[3,9],[4,1], [4,9], [5,1], [6,1], [9,4],[9,5],[9,6]
-        print(oil) 
+# =============================================================================
+#     # Testing checks
+#     print(robot.isObstacleUp())
+#     print(robot.isObstacleOnLeft())
+#     print(robot.isObstacleOnRight())
+#     print(robot.isObstacleDown())
+# =============================================================================
+
+    # Testing Movements
+    # IA Agent 1, Simple algorithm to check movements
+    ia_algorithms.runIAAgent1(robot, mainMaze, items, MaxSteps, t)
     
-    print(mainMaze)
-    print(secondShip.getFuel())
     
-    ## DONT USE, THEY'RE NOT WORKING PROPERLY YET
-    # IA Agent 1
-    #ia_algorithms.runIAAgent1()
-    
-    # IA Agent 2
-    #ia_algorithms.runIAAgent2()
+    if(robot.getCollectedItems() == numberItems):
+        print("Collected All Items")
 
 main()
 
