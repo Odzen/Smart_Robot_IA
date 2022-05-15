@@ -10,8 +10,8 @@ class Robot1(object):
     def __init__(self, position, maze):
         self.maze = maze
         self.position = position
-        maze.setElement(position,3)
         self.foundItem = False
+        maze.setElement(position,2)
     
     def getRobotPosition(self):
         """
@@ -38,6 +38,7 @@ class Robot1(object):
             return True
         else:
             return False
+        
     def isSomethingOnLeft(self):
         nextPosition = Position(self.position.getX(), self.position.getY()-1)
         if(self.maze.getElement(nextPosition) == 1 or self.maze.getElement(nextPosition) == 5):

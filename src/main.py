@@ -8,8 +8,9 @@ Created on Thu Apr 28 23:48:50 2022
 from Classes import Item
 from Classes import Maze
 from Classes import Oil
-from Classes import *
 from Classes import Robot
+from Classes import Obstacle
+from Classes import OpenCell
 from Classes import Ship
 from Classes import Position 
 from SearchAlgorithms.InformedSearch import *
@@ -35,19 +36,32 @@ def transformData(width, height, lines):
     
     for x in range(len(lines)):
         for y in range(len(lines)):
+            # Open Cell
+            if lines[x][y] == 0:
+                openCellPosition = Position.Position(x, y)
+                openCell = OpenCell.OpenCell(openCellPosition, mainMaze)
+            # Obstacle
+            if lines[x][y] == 1:
+                obstaclePosition = Position.Position(x, y)
+                obstacle = Obstacle.Obstacle(obstaclePosition, mainMaze)
+            # Robot
             if lines[x][y] == 2:
                 robotPosition = Position.Position(x, y)
                 robot = Robot.Robot2(robotPosition, mainMaze)
+            # Ship 1, fuel for 10 movements
             if lines[x][y] == 3:
                 firstShipPosition = Position.Position(x, y)
-                firstShip = Ship.Ship(firstShipPosition, mainMaze)
+                firstShip = Ship.Ship(firstShipPosition, mainMaze, 10)
+            # Ship 2, fuel for 20 movements
             if lines[x][y] == 4:
                 secondShipPosition = Position.Position(x, y)
-                secondShip = Ship.Ship(secondShipPosition, mainMaze)
+                secondShip = Ship.Ship(secondShipPosition, mainMaze, 20)
+            # Item
             if lines[x][y] == 5:
                 itemPosition = Position.Position(x, y)
                 item = Item.Item(itemPosition, mainMaze)
                 items.append(item)
+            # Oil
             if lines[x][y] == 6:
                 oilPosition = Position.Position(x, y)
                 oil = Oil.Oil(oilPosition, mainMaze)
@@ -71,6 +85,8 @@ def main():
     for oil in oils: # Should be in [2,3],[2,4], [3,1],[3,9],[4,1], [4,9], [5,1], [6,1], [9,4],[9,5],[9,6]
         print(oil) 
     
+    print(mainMaze)
+    print(secondShip.getFuel())
     
     ## DONT USE, THEY'RE NOT WORKING PROPERLY YET
     # IA Agent 1

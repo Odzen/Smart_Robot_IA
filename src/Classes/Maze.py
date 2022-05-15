@@ -15,7 +15,7 @@ class Maze(object):
         self.width = width
         self.height = height
         self.maze = [ [0] * height for i in range(width)]
-        self.OUT = 5
+        self.OUT = 7
     
     def getWidth(self):
         return self.width
@@ -39,7 +39,7 @@ class Maze(object):
             print("Try again")
             raise Exception("Error: "+str(error))
     
-    # 5 is a case when is trying to access to a position outside from the maze
+    # 7 is a case when is trying to access to a position outside from the maze
     def getElement(self, position):
         if(position.getX() < 0 or position.getY() < 0):
             result = self.OUT
