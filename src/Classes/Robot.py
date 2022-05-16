@@ -2,7 +2,7 @@
 Class for Smart Robot, simple agent
 """
 
-from .Maze import Maze
+#from .Maze import Maze
 from .Position import Position 
 from .Obstacle import Obstacle
 from .Item import Item
