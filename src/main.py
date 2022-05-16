@@ -17,6 +17,7 @@ from SearchAlgorithms.InformedSearch import *
 from SearchAlgorithms.UninformedSearch import *
 from SearchAlgorithms import ia_algorithms
 from ReadTest import *
+from RobotVisualization import *
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -89,7 +90,12 @@ def main():
 
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
-    ia_algorithms.runIAAgent1(robot, mainMaze, items, MaxSteps, t)
+    #ia_algorithms.runIAAgent1(robot, mainMaze, items, MaxSteps, t)
+    
+    
+    ## Testing Animation
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, mainMaze)
+    anim.done()
     
     
     if(robot.getCollectedItems() == numberItems):
