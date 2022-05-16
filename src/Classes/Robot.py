@@ -2,7 +2,7 @@
 Class for Smart Robot, simple agent
 """
 
-#from .Maze import Maze
+from .Maze import Maze
 from .Position import Position 
 from .Obstacle import Obstacle
 from .Item import Item
@@ -184,14 +184,14 @@ class Robot1(object):
             print("Try again")
             raise Exception("Error: "+str(error))
         
-# Agent 1
+# Agent saving the previous positions
 class Robot2(Robot1):
     def __init__(self, position, maze):
         super().__init__(position, maze)
         self.previousX = position.getX()
         self.previousY = position.getY()
         self.previuosPositions = []
-        #self.mazePreviuousPositions = Maze(self.maze.getWidth(), self.maze.getHeight())
+        self.mazePreviuousPositions = Maze(self.maze.getWidth(), self.maze.getHeight())
     
     def previousPosition(self):
         return "The Robot was here: ["+str(self.previousX)+" , " + str(self.previousY) +  "]"
