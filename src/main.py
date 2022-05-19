@@ -17,6 +17,7 @@ from SearchAlgorithms.InformedSearch import *
 from SearchAlgorithms.UninformedSearch import *
 from SearchAlgorithms import ia_algorithms
 from ReadTest import *
+from RobotVisualization import *
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -30,6 +31,7 @@ def transformData(width, height, lines):
     mainMaze = Maze.Maze(width, height)
     items = []
     oils = []
+    obstacles = []
     
     for x in range(len(lines)):
         for y in range(len(lines)):
@@ -41,6 +43,7 @@ def transformData(width, height, lines):
             if lines[x][y] == 1:
                 obstaclePosition = Position.Position(x, y)
                 obstacle = Obstacle.Obstacle(obstaclePosition, mainMaze)
+                obstacles.append(obstacle)
             # Robot
             if lines[x][y] == 2:
                 robotPosition = Position.Position(x, y)
@@ -65,7 +68,7 @@ def transformData(width, height, lines):
                 oils.append(oil)
             mainMaze.setElement(Position.Position(x,y), lines[x][y])
     
-    return robot, firstShip, secondShip, items, oils, mainMaze 
+    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze 
 
 def main():
     
@@ -75,7 +78,7 @@ def main():
     
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
-    robot, firstShip, secondShip, items, oils, mainMaze = transformData(width, height, lines)
+    robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
     numberItems = len(items)
     numberOils = len(oils)
     
@@ -89,7 +92,16 @@ def main():
 
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
-    ia_algorithms.runIAAgent1(robot, mainMaze, items, MaxSteps, t)
+    ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
+    
+    
+    ## Testing Animation
+    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    
+    #for i in range(5):
+    #    robot.moveLeft()
+    #    anim.update()
+    #anim.done()
     
     
     if(robot.getCollectedItems() == numberItems):

@@ -24,6 +24,9 @@ class Ship(object):
     def setFuel(self, newFuel):
         self.fuel = newFuel
     
+    def getShipPosition(self):
+        return self.position
+    
     def decreaseFuelByOne(self):
         self.fuel -= 1
     
