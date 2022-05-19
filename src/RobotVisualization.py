@@ -10,7 +10,7 @@ from Classes import Obstacle
 from tkinter import *
 
 class RobotVisualization(object):
-    def __init__(self, robot, firstShip, secondShip, items, oils, mainMaze, delay = 0.2):
+    def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze, delay = 1):
         "Initializes a visualization with the specified parameters."
         # Number of seconds to pause after each frame
         self.delay = delay
@@ -24,6 +24,7 @@ class RobotVisualization(object):
         self.secondShip = secondShip
         self.items = items
         self.oils = oils
+        self.obstacles = obstacles
 
         # Initialize a drawing surface
         self.master = Tk() # Window
@@ -61,12 +62,9 @@ class RobotVisualization(object):
                                        text=self._status_string(0))
         self.time = 0
         
-        # Draw Robot
-        robotPosition = robot.getRobotPosition()
-        self._draw_robot(robotPosition)
         
-        # Draw Walls
-        self._draw_walls(mainMaze)
+        # Draw Obstacles
+        self._draw_obstacles(obstacles)
         
         # Draw Oils
         self._draw_oils(oils)
@@ -76,6 +74,11 @@ class RobotVisualization(object):
         
         # Draw Ships
         self._draw_ships(firstShip, secondShip)
+        
+        
+        # Draw Robot
+        robotPosition = robot.getRobotPosition()
+        self._draw_robot(robotPosition)
         
         self.master.update()
     
@@ -96,15 +99,14 @@ class RobotVisualization(object):
         x2, y2 = self._map_coords(x + 1 , y + 1)
         return self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
     
-    def _draw_walls(self, maze):
-        "Returns rectangles representing the walls with the specified parameters."
-        for i in range(self.width):
-            for j in range(self.height):
-                currentPosition = Position.Position(i, j)
-                if type(maze.getElement(currentPosition)) == Obstacle.Obstacle:
-                    x1, y1 = self._map_coords(i , j)
-                    x2, y2 = self._map_coords(i + 1 , j + 1)
-                    self.w.create_rectangle(x1, y1, x2, y2, fill = "gray")
+    def _draw_obstacles(self, obstacles):
+        "Returns rectangles representing the obstacles with the specified parameters."
+        for obstacle in obstacles:
+            obstaclePosition = obstacle.getObstaclePosition()
+            x, y = obstaclePosition.getX(), obstaclePosition.getY()
+            x1, y1 = self._map_coords(x , y)
+            x2, y2 = self._map_coords(x + 1 , y + 1)
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "gray")
                     
     def _draw_oils(self, oils):
         "Returns rectangles representing the oils with the specified parameters."
@@ -143,6 +145,68 @@ class RobotVisualization(object):
         self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
     
     
+    
+    def update(self):
+        "Redraws the visualization with the specified params"
+        self.w.delete("all")
+        # Draw a backing and lines
+        x1, y1 = self._map_coords(0, 0)
+        x2, y2 = self._map_coords(self.width, self.height)
+        self.w.create_rectangle(x1, y1, x2, y2, fill = "white")
+        
+        # Draw white squares for dirty tiles
+        self.tiles = {}
+        for i in range(self.width):
+            for j in range(self.height):
+                x1, y1 = self._map_coords(i, j)
+                x2, y2 = self._map_coords(i + 1, j + 1)
+                self.tiles[(i, j)] = self.w.create_rectangle(x1, y1, x2, y2,
+                                                             fill = "white")
+        
+        # Draw gridlines
+        for i in range(self.width + 1):
+            x1, y1 = self._map_coords(i, 0)
+            x2, y2 = self._map_coords(i, self.height)
+            self.w.create_line(x1, y1, x2, y2)
+        for i in range(self.height + 1):
+            x1, y1 = self._map_coords(0, i)
+            x2, y2 = self._map_coords(self.width, i)
+            self.w.create_line(x1, y1, x2, y2)
+        
+        
+        # Draw some status text
+        self.text = self.w.create_text(25, 0, anchor=NW,
+                                       text=self._status_string(0))
+        
+        
+        
+        # Draw Obstacles
+        self._draw_obstacles(self.obstacles)
+        
+        # Draw Oils
+        self._draw_oils(self.oils)
+        
+        # Draw Items
+        self._draw_items(self.items)
+        
+        # Draw Ships
+        self._draw_ships(self.firstShip, self.secondShip)
+    
+        
+        # Draw Robot
+        robotPosition = self.robot.getRobotPosition()
+        self._draw_robot(robotPosition)
+        
+        # Update text
+        self.w.delete(self.text)
+        self.time += 1
+        self.text = self.w.create_text(
+            25, 0, anchor=NW,
+            text=self._status_string(self.time))
+        self.master.update()
+        time.sleep(self.delay)
+
+        
     def done(self):
         "Indicate that the animation is done so that we allow the user to close the window."
         mainloop()
