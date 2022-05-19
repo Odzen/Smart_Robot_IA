@@ -8,6 +8,9 @@ class Item(object):
         self.position = position
         self.maze = maze
         #maze.setElement(position,5)
+    
+    def getItemPosition(self):
+        return self.position
         
     def __str__(self):
         return "There is an Item here ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"     

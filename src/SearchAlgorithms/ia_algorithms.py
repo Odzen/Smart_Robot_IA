@@ -5,6 +5,7 @@ Created on Fri Apr 29 00:15:50 2022
 @author: Juan Sebastian Velasquez Acevedo
 """
 import time
+from RobotVisualization import *
 
 def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
     """
@@ -29,6 +30,8 @@ def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
     None.
 
     """
+    
+    
     print("Initial Maze:")
     print(mainMaze)
     steps = 1

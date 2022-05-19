@@ -71,6 +71,11 @@ class RobotVisualization(object):
         # Draw Oils
         self._draw_oils(oils)
         
+        # Draw Items
+        self._draw_items(items)
+        
+        # Draw Ships
+        self._draw_ships(firstShip, secondShip)
         
         self.master.update()
     
@@ -89,26 +94,53 @@ class RobotVisualization(object):
         x, y = position.getX(), position.getY()
         x1, y1 = self._map_coords(x , y)
         x2, y2 = self._map_coords(x + 1 , y + 1)
-        return self.w.create_oval(x1, y1, x2, y2, fill = "black")
+        return self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
     
     def _draw_walls(self, maze):
-        "Returns a polygon representing a robot with the specified parameters."
+        "Returns rectangles representing the walls with the specified parameters."
         for i in range(self.width):
             for j in range(self.height):
                 currentPosition = Position.Position(i, j)
                 if type(maze.getElement(currentPosition)) == Obstacle.Obstacle:
                     x1, y1 = self._map_coords(i , j)
                     x2, y2 = self._map_coords(i + 1 , j + 1)
-                    self.w.create_rectangle(x1, y1, x2, y2, fill = "brown")
+                    self.w.create_rectangle(x1, y1, x2, y2, fill = "gray")
                     
     def _draw_oils(self, oils):
-        "Returns a polygon representing a robot with the specified parameters."
+        "Returns rectangles representing the oils with the specified parameters."
         for oil in oils:
             oilPosition = oil.getOilPosition()
             x, y = oilPosition.getX(), oilPosition.getY()
             x1, y1 = self._map_coords(x , y)
             x2, y2 = self._map_coords(x + 1 , y + 1)
             self.w.create_rectangle(x1, y1, x2, y2, fill = "red")
+
+                    
+    def _draw_items(self, items):
+        "Returns rectangles representing the items with the specified parameters."
+        for item in items:
+            itemPosition = item.getItemPosition()
+            x, y = itemPosition.getX(), itemPosition.getY()
+            x1, y1 = self._map_coords(x , y)
+            x2, y2 = self._map_coords(x + 1 , y + 1)
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "yellow")
+
+    def _draw_ships(self, firstShip, secondShip):
+        "Returns rectangles representing the ships with the specified parameters."
+        
+        #Ship 1
+        firstShipPosition = firstShip.getShipPosition()
+        xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
+        x1Ship1, y1Ship1 = self._map_coords(xShip1 , yShip1)
+        x2Ship1, y2Ship1 = self._map_coords(xShip1 + 1 , yShip1 + 1)
+        self.w.create_rectangle(x1Ship1, y1Ship1, x2Ship1, y2Ship1, fill = "green")
+        
+        #Ship 2
+        secondShipPosition = secondShip.getShipPosition()
+        xShip2, yShip2 = secondShipPosition.getX(), secondShipPosition.getY()
+        x1Ship2, y1Ship2 = self._map_coords(xShip2 , yShip2)
+        x2Ship2, y2Ship2 = self._map_coords(xShip2 + 1 , yShip2 + 1)
+        self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
     
     
     def done(self):
