@@ -100,8 +100,12 @@ def main():
     
     robot.moveRight(firstShip, secondShip, items, oils)
     anim.update()
-    print("Item 1 - State: ", items[0].getItemState())
-    print("Item 2 - State: ", items[1].getItemState())
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
     """
     robot.moveRight(firstShip, secondShip, items, oils)
     anim.update()

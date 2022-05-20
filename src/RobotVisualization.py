@@ -126,6 +126,16 @@ class RobotVisualization(object):
             x1, y1 = self._map_coords(x , y)
             x2, y2 = self._map_coords(x + 1 , y + 1)
             self.w.create_rectangle(x1, y1, x2, y2, fill = "yellow")
+        
+    def _draw_one_item(self, item):
+        "Returns rectangles representing the ships with the specified parameters."
+        
+        #Item
+        itemPosition = item.getItemPosition()
+        x, y = itemPosition.getX(), itemPosition.getY()
+        x1, y1 = self._map_coords(x , y)
+        x2, y2 = self._map_coords(x + 1 , y + 1)
+        self.w.create_rectangle(x1, y1, x2, y2, fill = "yellow")
 
     def _draw_ships(self, firstShip, secondShip):
         "Returns rectangles representing the ships with the specified parameters."
@@ -187,7 +197,15 @@ class RobotVisualization(object):
         self._draw_oils(self.oils)
         
         # Draw Items
-        self._draw_items(self.items)
+        if  self.items[0].getItemState():
+            self._draw_one_item(self.items[0])
+            
+        elif self.items[1].getItemState():
+            self._draw_one_item(self.items[1])
+            
+        elif self.items[0].getItemState() and self.items[1].getItemState():
+            self._draw_items(self.items)
+            
         
         # Draw Ships
         self._draw_ships(self.firstShip, self.secondShip)
