@@ -98,7 +98,7 @@ def main():
     ## Testing Animation
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
-    robot.moveRight(firstShip, secondShip, items, oils)
+    robot.moveLeft(firstShip, secondShip, items, oils)
     anim.update()
     robot.moveLeft(firstShip, secondShip, items, oils)
     anim.update()

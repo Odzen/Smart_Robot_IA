@@ -59,7 +59,7 @@ class RobotVisualization(object):
         
         # Draw some status text
         self.text = self.w.create_text(25, 0, anchor=NW,
-                                       text=self._status_string(0))
+                                       text=self._status_string(0, robot.getCollectedItems(), firstShip.getFuel(), secondShip.getFuel() ))
         self.time = 0
         
         
@@ -87,10 +87,10 @@ class RobotVisualization(object):
         return (250 + 450 * ((y - self.width / 2.0) / self.max_dim),
                 250 + 450 * ((x - self.height / 2.0) / self.max_dim))
     
-    def _status_string(self, time):
+    def _status_string(self, time, items, fuel1, fuel2):
         "Returns an appropriate status string to print."
-        return "Time: %04d" % \
-            (time)
+        return "Time: %04d; Items Collected: %d; Ship 1 Fuel: %d; Ship 2 Fuel: %d " % \
+            (time, items, fuel1, fuel2)
             
     def _draw_robot(self, position):
         "Returns a polygon representing a robot with the specified parameters."
@@ -183,13 +183,6 @@ class RobotVisualization(object):
             x2, y2 = self._map_coords(self.width, i)
             self.w.create_line(x1, y1, x2, y2)
         
-        
-        # Draw some status text
-        self.text = self.w.create_text(25, 0, anchor=NW,
-                                       text=self._status_string(0))
-        
-        
-        
         # Draw Obstacles
         self._draw_obstacles(self.obstacles)
         
@@ -220,7 +213,7 @@ class RobotVisualization(object):
         self.time += 1
         self.text = self.w.create_text(
             25, 0, anchor=NW,
-            text=self._status_string(self.time))
+            text=self._status_string(self.time, self.robot.getCollectedItems(), self.firstShip.getFuel(), self.secondShip.getFuel()))
         self.master.update()
         time.sleep(self.delay)
 
