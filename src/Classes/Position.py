@@ -34,7 +34,6 @@ class Position(object):
 
     
     def __eq__(self, obj):
-        print(obj)
         return isinstance(obj, Position) and obj.getX() == self.x and obj.getY() == self.y
 
     def __str__(self):  
