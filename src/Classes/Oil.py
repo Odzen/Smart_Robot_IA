@@ -8,6 +8,15 @@ class Oil(object):
         self.position = position
         self.maze = maze
         self.cost = 4
+        self.state = True #True if the Oil is still on the Maze, False if the Robot passed over
+    
+    
+    def getOilState(self):
+        return self.state
+    
+    def setOilState(self):
+        if self.state:
+            self.state = False 
     
     def getCost(self):
         return self.cost
@@ -16,7 +25,7 @@ class Oil(object):
         return self.position
     
     # Call this function to set the cost, for example when the player
-    # is driving a one of the ships, the cost is not 4, is just 1
+    # is driving one of the ships, the cost is not 4, is just 1
     def setCost(self, newCost):
         self.cost = newCost
         

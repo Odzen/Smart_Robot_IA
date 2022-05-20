@@ -55,7 +55,7 @@ def transformData(width, height, lines):
             # Ship 2, fuel for 20 movements
             if lines[x][y] == 4:
                 secondShipPosition = Position.Position(x, y)
-                secondShip = Ship.Ship(secondShipPosition, mainMaze, 20)
+                secondShip = Ship.Ship(secondShipPosition, mainMaze, 6)
             # Item
             if lines[x][y] == 5:
                 itemPosition = Position.Position(x, y)
@@ -72,7 +72,7 @@ def transformData(width, height, lines):
 
 def main():
     
-    Test = 1
+    Test = 2
     MaxSteps = 15
     t = 2 # 2 seconds
     
@@ -81,31 +81,45 @@ def main():
     robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
     numberItems = len(items)
     numberOils = len(oils)
-    
-# =============================================================================
-#     # Testing checks
-#     print(robot.isObstacleUp())
-#     print(robot.isObstacleOnLeft())
-#     print(robot.isObstacleOnRight())
-#     print(robot.isObstacleDown())
-# =============================================================================
 
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
-    ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
+    #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
     
     
     ## Testing Animation
-    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    
-    #for i in range(5):
-    #    robot.moveLeft()
-    #    anim.update()
-    #anim.done()
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
     
-    if(robot.getCollectedItems() == numberItems):
-        print("Collected All Items")
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    
+    anim.done()
+    
 
 main()
 

@@ -59,7 +59,7 @@ class RobotVisualization(object):
         
         # Draw some status text
         self.text = self.w.create_text(25, 0, anchor=NW,
-                                       text=self._status_string(0))
+                                       text=self._status_string(0, robot.getCollectedItems(), firstShip.getFuel(), secondShip.getFuel() ))
         self.time = 0
         
         
@@ -87,17 +87,25 @@ class RobotVisualization(object):
         return (250 + 450 * ((y - self.width / 2.0) / self.max_dim),
                 250 + 450 * ((x - self.height / 2.0) / self.max_dim))
     
-    def _status_string(self, time):
+    def _status_string(self, time, items, fuel1, fuel2):
         "Returns an appropriate status string to print."
-        return "Time: %04d" % \
-            (time)
+        return "Time: %04d; Items Collected: %d; Ship 1 Fuel: %d; Ship 2 Fuel: %d " % \
+            (time, items, fuel1, fuel2)
             
     def _draw_robot(self, position):
         "Returns a polygon representing a robot with the specified parameters."
+        
         x, y = position.getX(), position.getY()
         x1, y1 = self._map_coords(x , y)
         x2, y2 = self._map_coords(x + 1 , y + 1)
-        return self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
+        
+        if self.firstShip.isRobotDriving():
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "green")
+
+        if self.secondShip.isRobotDriving():
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "purple")
+            
+        self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
     
     def _draw_obstacles(self, obstacles):
         "Returns rectangles representing the obstacles with the specified parameters."
@@ -111,38 +119,43 @@ class RobotVisualization(object):
     def _draw_oils(self, oils):
         "Returns rectangles representing the oils with the specified parameters."
         for oil in oils:
-            oilPosition = oil.getOilPosition()
-            x, y = oilPosition.getX(), oilPosition.getY()
-            x1, y1 = self._map_coords(x , y)
-            x2, y2 = self._map_coords(x + 1 , y + 1)
-            self.w.create_rectangle(x1, y1, x2, y2, fill = "red")
+            if oil.getOilState():
+                oilPosition = oil.getOilPosition()
+                x, y = oilPosition.getX(), oilPosition.getY()
+                x1, y1 = self._map_coords(x , y)
+                x2, y2 = self._map_coords(x + 1 , y + 1)
+                self.w.create_rectangle(x1, y1, x2, y2, fill = "red")
 
                     
     def _draw_items(self, items):
         "Returns rectangles representing the items with the specified parameters."
         for item in items:
-            itemPosition = item.getItemPosition()
-            x, y = itemPosition.getX(), itemPosition.getY()
-            x1, y1 = self._map_coords(x , y)
-            x2, y2 = self._map_coords(x + 1 , y + 1)
-            self.w.create_rectangle(x1, y1, x2, y2, fill = "yellow")
+            if item.getItemState():
+                itemPosition = item.getItemPosition()
+                x, y = itemPosition.getX(), itemPosition.getY()
+                x1, y1 = self._map_coords(x , y)
+                x2, y2 = self._map_coords(x + 1 , y + 1)
+                self.w.create_rectangle(x1, y1, x2, y2, fill = "yellow")
 
     def _draw_ships(self, firstShip, secondShip):
         "Returns rectangles representing the ships with the specified parameters."
         
         #Ship 1
-        firstShipPosition = firstShip.getShipPosition()
-        xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
-        x1Ship1, y1Ship1 = self._map_coords(xShip1 , yShip1)
-        x2Ship1, y2Ship1 = self._map_coords(xShip1 + 1 , yShip1 + 1)
-        self.w.create_rectangle(x1Ship1, y1Ship1, x2Ship1, y2Ship1, fill = "green")
+        
+        if not firstShip.isRobotDriving() and firstShip.getShipState():
+            firstShipPosition = firstShip.getShipPosition()
+            xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
+            x1Ship1, y1Ship1 = self._map_coords(xShip1 , yShip1)
+            x2Ship1, y2Ship1 = self._map_coords(xShip1 + 1 , yShip1 + 1)
+            self.w.create_rectangle(x1Ship1, y1Ship1, x2Ship1, y2Ship1, fill = "green")
         
         #Ship 2
-        secondShipPosition = secondShip.getShipPosition()
-        xShip2, yShip2 = secondShipPosition.getX(), secondShipPosition.getY()
-        x1Ship2, y1Ship2 = self._map_coords(xShip2 , yShip2)
-        x2Ship2, y2Ship2 = self._map_coords(xShip2 + 1 , yShip2 + 1)
-        self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
+        if not secondShip.isRobotDriving() and secondShip.getShipState():
+            secondShipPosition = secondShip.getShipPosition()
+            xShip2, yShip2 = secondShipPosition.getX(), secondShipPosition.getY()
+            x1Ship2, y1Ship2 = self._map_coords(xShip2 , yShip2)
+            x2Ship2, y2Ship2 = self._map_coords(xShip2 + 1 , yShip2 + 1)
+            self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
     
     
     
@@ -173,13 +186,6 @@ class RobotVisualization(object):
             x2, y2 = self._map_coords(self.width, i)
             self.w.create_line(x1, y1, x2, y2)
         
-        
-        # Draw some status text
-        self.text = self.w.create_text(25, 0, anchor=NW,
-                                       text=self._status_string(0))
-        
-        
-        
         # Draw Obstacles
         self._draw_obstacles(self.obstacles)
         
@@ -188,6 +194,7 @@ class RobotVisualization(object):
         
         # Draw Items
         self._draw_items(self.items)
+            
         
         # Draw Ships
         self._draw_ships(self.firstShip, self.secondShip)
@@ -202,7 +209,7 @@ class RobotVisualization(object):
         self.time += 1
         self.text = self.w.create_text(
             25, 0, anchor=NW,
-            text=self._status_string(self.time))
+            text=self._status_string(self.time, self.robot.getCollectedItems(), self.firstShip.getFuel(), self.secondShip.getFuel()))
         self.master.update()
         time.sleep(self.delay)
 

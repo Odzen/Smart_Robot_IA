@@ -6,6 +6,8 @@ Class for Smart Robot, simple agent
 from .Position import Position 
 from .Obstacle import Obstacle
 from .Item import Item
+from .Oil import Oil
+from .Ship import Ship
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -38,8 +40,11 @@ class Robot1(object):
     def __str__(self):
         return "There is a Robot here: ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"
     
-    def hadfoundItem(self):
-        return self.foundItem
+    def hadfoundAllItems(self):
+        if self.getCollectedItems() == 2:
+            return True
+        else:
+            return False
     
     def isObstacleUp(self):
         nextPosition = Position(self.position.getX()-1, self.position.getY())
@@ -91,99 +96,157 @@ class Robot1(object):
         """
         #raise NotImplementedError
         self.position = position
+    
+    
+    def analizeNextMovement(self, nextPosition, firstShip, secondShip, items, oils):
+        elementOnNextPosition = self.maze.getElement(nextPosition)
+        typeElement = type(elementOnNextPosition)
         
-    def moveLeft(self):
+        # Check if the robot is on one of the the ships to decrease fuel and change cost when pass over Oil
+        if firstShip.isRobotDriving():
+            firstShip.decreaseFuelByOne()
+            for oil in oils:
+                oil.setCost(1)
+        elif secondShip.isRobotDriving():
+            secondShip.decreaseFuelByOne()
+            for oil in oils:
+                oil.setCost(1)
+        else:
+            for oil in oils:
+                oil.setCost(4)
+        
+        # Got Item on Left
+        if(typeElement == Item):
+            self.foundItem = True
+            self.increaseByOneCollectedItems()
+            
+            # If the robot grabbed the first Item
+            if items[0].getItemPosition() == nextPosition:
+                items[0].setItemState()
+            else: # If the robot grabbed the second Item
+                items[1].setItemState()
+            
+            # If the robot grabbed all the Items
+            if self.hadfoundAllItems():
+                print("Found All Items, Congrats!!")
+            else:# If the robot grabbed all the Items
+                print("Found One Item!!")
+
+        # Passed Over Oil
+        if(typeElement == Oil):
+            for oil in oils:
+                if oil.getOilPosition() == nextPosition:
+                    oil.setOilState()
+                    print("Cost to pass over next Oil: ", oil.getCost()) # To check if the cost changes when the robot is on the ship
+        
+        # Grab Ship
+        if(typeElement == Ship):
+            # First Ship
+            if firstShip.getShipPosition() == nextPosition and not secondShip.isRobotDriving():
+                print("Grabbed Ship 1")
+                firstShip.setShipRobotDriving()
+                    
+            # Second Ship
+            if secondShip.getShipPosition() == nextPosition and not firstShip.isRobotDriving():
+                print("Grabbed Ship 2")
+                secondShip.setShipRobotDriving()
+                    
+            
+        
+    def moveLeft(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleOnLeft())):
                 lookLeft = Position(self.position.getX(), self.position.getY()-1)
-                if(type(self.maze.getElement(lookLeft)) == Item):
-                    self.foundItem = True
-                    self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                
+                self.analizeNextMovement(lookLeft, firstShip, secondShip, items, oils)
+                    
                 self.maze.setElement(self.position, 0) 
                 newY = self.position.getY()-1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Left")
+                
                 if(self.smellItem()):
                     print("Item close!")
             else:
-                print("Cannot move, something on the left")
+                print("Cannot move, something to the left")
+                
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
     
-    def moveUp(self):
+    def moveUp(self, firstShip, secondShip, items, oils):
         try:
             if(not (self.isObstacleUp())):
                 lookUp = Position(self.position.getX()-1, self.position.getY())
-                if(type(self.maze.getElement(lookUp)) == Item):
-                    self.foundItem = True
-                    self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                
+                self.analizeNextMovement(lookUp, firstShip, secondShip, items, oils)
+                    
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()-1
                 newPosition = self.position.setPosition(newX , self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Up")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             
             else:
-                print("Cannot move, something Up")
+                print("Cannot move, there is something above")
                 
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
             
-    def moveDown(self):
+    def moveDown(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleDown())):
                 lookDown = Position(self.position.getX()+1, self.position.getY())
-                if(type(self.maze.getElement(lookDown)) == Item):
-                    self.foundItem = True
-                    self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                
+                self.analizeNextMovement(lookDown, firstShip, secondShip, items, oils)
+                    
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()+1
                 newPosition = self.position.setPosition(newX , self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Down")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             else:
-                print("Cannot move, something Down")
+                print("Cannot move, there is something below")
                 
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
             
-    def moveRight(self):
+    def moveRight(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleOnRight())):
                 lookRight = Position(self.position.getX(), self.position.getY()+1)
-                if(type(self.maze.getElement(lookRight)) == Item):
-                    self.foundItem = True
-                    self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                
+                self.analizeNextMovement(lookRight, firstShip, secondShip, items, oils)
+                    
                 self.maze.setElement(self.position, 0)
                 newY = self.position.getY()+1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Right")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             else:
-                print("Cannot move, something on the Right")
+                print("Cannot move, something to the Right")
 
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
-        
+
+"""        
 # Agent saving the previous positions
 class Robot2(Robot1):
     def __init__(self, position, maze):
@@ -271,3 +334,5 @@ class Robot2(Robot1):
             super().moveRight()
         else:
             print("Right position visited before")
+    
+"""
