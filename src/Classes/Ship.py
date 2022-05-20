@@ -13,7 +13,15 @@ class Ship(object):
         self.maze = maze
         self.cost = 1
         self.fuel = fuel
-        #maze.setElement(position,6)
+        self.state = True #True if the Ship is still on the Maze, False if the Ship is out of fuel
+    
+    
+    def getShipState(self):
+        return self.state
+    
+    def setShipState(self):
+        if self.state:
+            self.state = False
     
     def getCost(self):
         return self.cost
@@ -28,6 +36,8 @@ class Ship(object):
         return self.position
     
     def decreaseFuelByOne(self):
+        if self.fuel == 0:
+            self.setShipState()
         self.fuel -= 1
     
     def __str__(self):

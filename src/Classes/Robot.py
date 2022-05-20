@@ -6,6 +6,8 @@ Class for Smart Robot, simple agent
 from .Position import Position 
 from .Obstacle import Obstacle
 from .Item import Item
+from .Oil import Oil
+from .Ship import Ship
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -38,8 +40,11 @@ class Robot1(object):
     def __str__(self):
         return "There is a Robot here: ["+str(self.position.getX())+" , " + str(self.position.getY()) +  "]"
     
-    def hadfoundItem(self):
-        return self.foundItem
+    def hadfoundAllItems(self):
+        if self.getCollectedItems() == 0:
+            return True
+        else:
+            return False
     
     def isObstacleUp(self):
         nextPosition = Position(self.position.getX()-1, self.position.getY())
@@ -92,42 +97,97 @@ class Robot1(object):
         #raise NotImplementedError
         self.position = position
         
-    def moveLeft(self):
+    def moveLeft(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleOnLeft())):
                 lookLeft = Position(self.position.getX(), self.position.getY()-1)
-                if(type(self.maze.getElement(lookLeft)) == Item):
+                elementOnLeft = self.maze.getElement(lookLeft)
+                typeElement = type(elementOnLeft)
+                
+                # Got Item on Left
+                if(typeElement == Item):
                     self.foundItem = True
                     self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                    
+                    # If the robot grabbed the first Item
+                    if items[0].getItemPosition() == lookLeft:
+                        items[0].setItemState()
+                    else: # If the robot grabbed the second Item
+                        items[1].setItemState()
+                    
+                    # If the robot grabbed all the Items
+                    if self.hadfoundAllItems():
+                        print("Found All Items, Congrats!!")
+                    else:# If the robot grabbed all the Items
+                        print("Found One Item!!")
+
+                # Passed Over Oil
+                if(typeElement == Oil):
+                    print(elementOnLeft)
+                    elementOnLeft.setOilState()
+                
+                # Passed Over Ship
+                if(typeElement == Ship):
+                    print(elementOnLeft)
+                    elementOnLeft.decreaseFuelByOne()
+                    
                 self.maze.setElement(self.position, 0) 
                 newY = self.position.getY()-1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Left")
+                
                 if(self.smellItem()):
                     print("Item close!")
             else:
                 print("Cannot move, something on the left")
+                
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
     
-    def moveUp(self):
+    def moveUp(self, firstShip, secondShip, items, oils):
         try:
             if(not (self.isObstacleUp())):
                 lookUp = Position(self.position.getX()-1, self.position.getY())
-                if(type(self.maze.getElement(lookUp)) == Item):
+                elementUp = self.maze.getElement(lookUp)
+                typeElement = type(elementUp)
+                
+                # Got Item Above
+                if(typeElement == Item):
                     self.foundItem = True
                     self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                    
+                    # If the robot grabbed the first Item
+                    if items[0].getItemPosition() == lookUp:
+                        items[0].setItemState()
+                    else: # If the robot grabbed the second Item
+                        items[1].setItemState()
+                    
+                    # If the robot grabbed all the Items
+                    if self.hadfoundAllItems():
+                        print("Found All Items, Congrats!!")
+                    else:# If the robot grabbed all the Items
+                        print("Found One Item!!")
+
+                # Passed Over Oil
+                if(typeElement == Oil):
+                    print(elementUp)
+                    elementUp.setOilState()
+                
+                # Passed Over Ship
+                if(typeElement == Ship):
+                    print(elementUp)
+                    elementUp.decreaseFuelByOne()
+                    
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()-1
                 newPosition = self.position.setPosition(newX , self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Up")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             
@@ -138,20 +198,47 @@ class Robot1(object):
             print("Try again")
             raise Exception("Error: "+str(error))
             
-    def moveDown(self):
+    def moveDown(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleDown())):
                 lookDown = Position(self.position.getX()+1, self.position.getY())
-                if(type(self.maze.getElement(lookDown)) == Item):
+                elementDown = self.maze.getElement(lookDown)
+                typeElement = type(elementDown)
+                
+                # Got Item Below
+                if(typeElement == Item):
                     self.foundItem = True
                     self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                    
+                    # If the robot grabbed the first Item
+                    if items[0].getItemPosition() == lookDown:
+                        items[0].setItemState()
+                    else: # If the robot grabbed the second Item
+                        items[1].setItemState()
+                    
+                    # If the robot grabbed all the Items
+                    if self.hadfoundAllItems():
+                        print("Found All Items, Congrats!!")
+                    else:# If the robot grabbed all the Items
+                        print("Found One Item!!")
+
+                # Passed Over Oil
+                if(typeElement == Oil):
+                    print(elementDown)
+                    elementDown.setOilState()
+                
+                # Passed Over Ship
+                if(typeElement == Ship):
+                    print(elementDown)
+                    elementDown.decreaseFuelByOne()
+                    
                 self.maze.setElement(self.position, 0)
                 newX = self.position.getX()+1
                 newPosition = self.position.setPosition(newX , self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Down")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             else:
@@ -161,20 +248,47 @@ class Robot1(object):
             print("Try again")
             raise Exception("Error: "+str(error))
             
-    def moveRight(self):
+    def moveRight(self, firstShip, secondShip, items, oils):
         try:
             if(not(self.isObstacleOnRight())):
                 lookRight = Position(self.position.getX(), self.position.getY()+1)
-                if(type(self.maze.getElement(lookRight)) == Item):
+                elementOnRight = self.maze.getElement(lookRight)
+                typeElement = type(elementOnRight)
+                
+                # Got Item on Right
+                if(typeElement == Item):
                     self.foundItem = True
                     self.increaseByOneCollectedItems()
-                    print("Found One Item, Congrats!!")
+                    
+                    # If the robot grabbed the first Item
+                    if items[0].getItemPosition() == lookRight:
+                        items[0].setItemState()
+                    else: # If the robot grabbed the second Item
+                        items[1].setItemState()
+                    
+                    # If the robot grabbed all the Items
+                    if self.hadfoundAllItems():
+                        print("Found All Items, Congrats!!")
+                    else:# If the robot grabbed all the Items
+                        print("Found One Item!!")
+
+                # Passed Over Oil
+                if(typeElement == Oil):
+                    print(elementOnRight)
+                    elementOnRight.setOilState()
+                
+                # Passed Over Ship
+                if(typeElement == Ship):
+                    print(elementOnRight)
+                    elementOnRight.decreaseFuelByOne()
+                    
                 self.maze.setElement(self.position, 0)
                 newY = self.position.getY()+1
                 newPosition = self.position.setPosition(self.position.getX() , newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
                 print("Moved Right")
+                
                 if(self.smellItem()):
                     print("Item close!!")
             else:
@@ -183,7 +297,8 @@ class Robot1(object):
         except IndexError as error:
             print("Try again")
             raise Exception("Error: "+str(error))
-        
+
+"""        
 # Agent saving the previous positions
 class Robot2(Robot1):
     def __init__(self, position, maze):
@@ -271,3 +386,5 @@ class Robot2(Robot1):
             super().moveRight()
         else:
             print("Right position visited before")
+    
+"""

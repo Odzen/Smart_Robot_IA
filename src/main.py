@@ -92,11 +92,61 @@ def main():
 
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
-    ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
+    #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
     
     
     ## Testing Animation
-    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    print("Item 1 - State: ", items[0].getItemState())
+    print("Item 2 - State: ", items[1].getItemState())
+    """
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveUp(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveUp(firstShip, secondShip, items, oils) # Found Item
+    print("Item 1 - State: ", items[0].getItemState())
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    print("Item 1 - State: ", items[0].getItemState())
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveRight()
+    anim.update()
+    robot.moveRight()
+    anim.update()
+    robot.moveRight()
+    anim.update()
+    robot.moveRight()
+    anim.update()
+    robot.moveUp()
+    anim.update()
+    robot.moveUp()
+    anim.update()
+    robot.moveLeft()
+    anim.update()
+    robot.moveRight()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    robot.moveDown()
+    anim.update()
+    """
+    anim.done()
     
     #for i in range(5):
     #    robot.moveLeft()
