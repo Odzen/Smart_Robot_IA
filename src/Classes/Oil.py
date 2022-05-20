@@ -16,8 +16,7 @@ class Oil(object):
     
     def setOilState(self):
         if self.state:
-            self.state = False
-    
+            self.state = False 
     
     def getCost(self):
         return self.cost

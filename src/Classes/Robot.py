@@ -102,6 +102,19 @@ class Robot1(object):
         elementOnNextPosition = self.maze.getElement(nextPosition)
         typeElement = type(elementOnNextPosition)
         
+        # Check if the robot is on one of the the ships to decrease fuel and change cost when pass over Oil
+        if firstShip.isRobotDriving():
+            firstShip.decreaseFuelByOne()
+            for oil in oils:
+                oil.setCost(1)
+        elif secondShip.isRobotDriving():
+            secondShip.decreaseFuelByOne()
+            for oil in oils:
+                oil.setCost(1)
+        else:
+            for oil in oils:
+                oil.setCost(4)
+        
         # Got Item on Left
         if(typeElement == Item):
             self.foundItem = True
@@ -124,10 +137,21 @@ class Robot1(object):
             for oil in oils:
                 if oil.getOilPosition() == nextPosition:
                     oil.setOilState()
+                    print("Cost to pass over next Oil: ", oil.getCost()) # To check if the cost changes when the robot is on the ship
         
-        # Passed Over Ship
-        #if(typeElement == Ship):
-        #    elementOnLeft.decreaseFuelByOne()
+        # Grab Ship
+        if(typeElement == Ship):
+            # First Ship
+            if firstShip.getShipPosition() == nextPosition and not secondShip.isRobotDriving():
+                print("Grabbed Ship 1")
+                firstShip.setShipRobotDriving()
+                    
+            # Second Ship
+            if secondShip.getShipPosition() == nextPosition and not firstShip.isRobotDriving():
+                print("Grabbed Ship 2")
+                secondShip.setShipRobotDriving()
+                    
+            
         
     def moveLeft(self, firstShip, secondShip, items, oils):
         try:
@@ -146,7 +170,7 @@ class Robot1(object):
                 if(self.smellItem()):
                     print("Item close!")
             else:
-                print("Cannot move, something on the left")
+                print("Cannot move, something to the left")
                 
         except IndexError as error:
             print("Try again")
@@ -170,7 +194,7 @@ class Robot1(object):
                     print("Item close!!")
             
             else:
-                print("Cannot move, something Up")
+                print("Cannot move, there is something above")
                 
         except IndexError as error:
             print("Try again")
@@ -193,7 +217,7 @@ class Robot1(object):
                 if(self.smellItem()):
                     print("Item close!!")
             else:
-                print("Cannot move, something Down")
+                print("Cannot move, there is something below")
                 
         except IndexError as error:
             print("Try again")
@@ -216,7 +240,7 @@ class Robot1(object):
                 if(self.smellItem()):
                     print("Item close!!")
             else:
-                print("Cannot move, something on the Right")
+                print("Cannot move, something to the Right")
 
         except IndexError as error:
             print("Try again")

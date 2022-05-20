@@ -94,10 +94,18 @@ class RobotVisualization(object):
             
     def _draw_robot(self, position):
         "Returns a polygon representing a robot with the specified parameters."
+        
         x, y = position.getX(), position.getY()
         x1, y1 = self._map_coords(x , y)
         x2, y2 = self._map_coords(x + 1 , y + 1)
-        return self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
+        
+        if self.firstShip.isRobotDriving():
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "green")
+
+        if self.secondShip.isRobotDriving():
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "purple")
+            
+        self.w.create_oval(x1, y1, x2, y2, fill = "cyan")
     
     def _draw_obstacles(self, obstacles):
         "Returns rectangles representing the obstacles with the specified parameters."
@@ -133,18 +141,21 @@ class RobotVisualization(object):
         "Returns rectangles representing the ships with the specified parameters."
         
         #Ship 1
-        firstShipPosition = firstShip.getShipPosition()
-        xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
-        x1Ship1, y1Ship1 = self._map_coords(xShip1 , yShip1)
-        x2Ship1, y2Ship1 = self._map_coords(xShip1 + 1 , yShip1 + 1)
-        self.w.create_rectangle(x1Ship1, y1Ship1, x2Ship1, y2Ship1, fill = "green")
+        
+        if not firstShip.isRobotDriving() and firstShip.getShipState():
+            firstShipPosition = firstShip.getShipPosition()
+            xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
+            x1Ship1, y1Ship1 = self._map_coords(xShip1 , yShip1)
+            x2Ship1, y2Ship1 = self._map_coords(xShip1 + 1 , yShip1 + 1)
+            self.w.create_rectangle(x1Ship1, y1Ship1, x2Ship1, y2Ship1, fill = "green")
         
         #Ship 2
-        secondShipPosition = secondShip.getShipPosition()
-        xShip2, yShip2 = secondShipPosition.getX(), secondShipPosition.getY()
-        x1Ship2, y1Ship2 = self._map_coords(xShip2 , yShip2)
-        x2Ship2, y2Ship2 = self._map_coords(xShip2 + 1 , yShip2 + 1)
-        self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
+        if not secondShip.isRobotDriving() and secondShip.getShipState():
+            secondShipPosition = secondShip.getShipPosition()
+            xShip2, yShip2 = secondShipPosition.getX(), secondShipPosition.getY()
+            x1Ship2, y1Ship2 = self._map_coords(xShip2 , yShip2)
+            x2Ship2, y2Ship2 = self._map_coords(xShip2 + 1 , yShip2 + 1)
+            self.w.create_rectangle(x1Ship2, y1Ship2, x2Ship2, y2Ship2, fill = "purple")
     
     
     
