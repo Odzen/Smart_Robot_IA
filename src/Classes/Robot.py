@@ -2,12 +2,11 @@
 Class for Smart Robot, simple agent
 """
 
-#from .Maze import Maze
-from .Position import Position 
-from .Obstacle import Obstacle
-from .Item import Item
-from .Oil import Oil
-from .Ship import Ship
+from Position import Position 
+from Obstacle import Obstacle
+from Item import Item
+from Oil import Oil
+from Ship import Ship
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -46,32 +45,32 @@ class Robot1(object):
         else:
             return False
     
-    def isObstacleUp(self):
-        nextPosition = Position(self.position.getX()-1, self.position.getY())
+    def isObstacleUp(self, currentPosition):
+        nextPosition = Position(currentPosition.getX()-1, currentPosition.getY())
         typeNextPositionElement = type(self.maze.getElement(nextPosition))
         if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
         
-    def isObstacleDown(self):
-        nextPosition = Position(self.position.getX()+1, self.position.getY())
+    def isObstacleDown(self, currentPosition):
+        nextPosition = Position(currentPosition.getX()+1, currentPosition.getY())
         typeNextPositionElement = type(self.maze.getElement(nextPosition))
         if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
         
-    def isObstacleOnLeft(self):
-        nextPosition = Position(self.position.getX(), self.position.getY()-1)
+    def isObstacleOnLeft(self, currentPosition):
+        nextPosition = Position(currentPosition.getX(), currentPosition.getY()-1)
         typeNextPositionElement = type(self.maze.getElement(nextPosition))
         if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
         else:
             return False
         
-    def isObstacleOnRight(self):
-        nextPosition = Position(self.position.getX(), self.position.getY()+1)
+    def isObstacleOnRight(self, currentPosition):
+        nextPosition = Position(currentPosition.getX(), currentPosition.getY()+1)
         typeNextPositionElement = type(self.maze.getElement(nextPosition))
         if(typeNextPositionElement == Obstacle or self.maze.getElement(nextPosition) == 7):
             return True
