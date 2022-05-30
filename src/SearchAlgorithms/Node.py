@@ -19,17 +19,17 @@ Position in Maze (x,y)
 
 
 class Node(object):
-    def __init__(self, father, position, value, depth, cost, operator):
+    def __init__(self, father, position, depth, cost, operator):
         self.father = father
         self.position = position
-        self.value = value
+        #self.value = value
         self.children = []
         self.depth = depth
         self.cost = cost
         self.operator = operator
 
-    def getValue(self):
-        return self.value
+    #def getValue(self):
+    #    return self.value
 
     def getChildren(self):
         return self.children
@@ -55,8 +55,8 @@ class Node(object):
         else:
             return 1 + max(x.getDepth() for x in self.children)
     
-    def addChild(self, position, value, costChild, operator):
-        newChildren = Node(self, position, value, self.depth+1, self.cost + costChild, operator)
+    def addChild(self, position, costChild, operator):
+        newChildren = Node(self, position, self.depth+1, self.cost + costChild, operator)
         self.children.append(newChildren)
         return newChildren
 
@@ -67,7 +67,7 @@ class Node(object):
         """
         Prints the subTree formed below the node
         """
-        ret = "\t"*level+repr(self.value)+"\n"
+        ret = "\t"*level+repr(str(self.position))+"\n"
         for child in self.children:
             ret += child.subTree(level+1)
         return ret
@@ -77,32 +77,39 @@ class Node(object):
 
     def printOperator(self):
         print("The operator to get to this node was: ", self.operator)
+    
+    def isGoal(self, position):
+        if position == self.position:
+            return True
+        else:
+            return False
+        
 
 
 # TESTS ---
 
 # ROOT
-rootNode = Node(None,Position.Position(1, 1), 1, 0, 0, None)
+rootNode = Node(None,Position.Position(1, 1), 0, 0, None)
 
 #CHILDREN
 # The childs only need a position, value, cost and operator
-child1 = rootNode.addChild(Position.Position(2, 2), 2, 1, "left")
-child2 = rootNode.addChild(Position.Position(3, 3), 3, 1, "left")
-child3 = rootNode.addChild(Position.Position(4, 4), 4, 1, "left")
+child1 = rootNode.addChild(Position.Position(2, 2), 1, "left")
+child2 = rootNode.addChild(Position.Position(3, 3), 1, "left")
+child3 = rootNode.addChild(Position.Position(4, 4), 1, "left")
 
 #GRANDCHILDREN
-grand1 = child1.addChild(Position.Position(5, 5), 5, 1, "left")
-grand2 = child1.addChild(Position.Position(6, 6), 6, 1, "left")
-grand3 = child1.addChild(Position.Position(7, 7), 7, 1, "left")
+grand1 = child1.addChild(Position.Position(5, 5), 1, "left")
+grand2 = child1.addChild(Position.Position(6, 6), 1, "left")
+grand3 = child1.addChild(Position.Position(7, 7), 1, "left")
 
 
-grand4 = child2.addChild(Position.Position(8, 8), 8, 1, "left")
-grand5 = child2.addChild(Position.Position(9, 9), 9, 1, "left")
-grand6 = child2.addChild(Position.Position(10, 10), 10, 1, "left")
+grand4 = child2.addChild(Position.Position(8, 8), 1, "left")
+grand5 = child2.addChild(Position.Position(9, 9), 1, "left")
+grand6 = child2.addChild(Position.Position(10, 10), 1, "left")
 
 
-grand7 = child3.addChild(Position.Position(11, 11), 11, 1, "left")
-grand8 = child3.addChild(Position.Position(12, 12), 12, 1, "left")
+grand7 = child3.addChild(Position.Position(11, 11), 1, "left")
+grand8 = child3.addChild(Position.Position(12, 12), 1, "left")
 
 # Checking Positions and Familia
 print(rootNode) # Should be (1,1)
