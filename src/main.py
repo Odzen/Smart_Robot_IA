@@ -18,6 +18,7 @@ from SearchAlgorithms.UninformedSearch import *
 from SearchAlgorithms import ia_algorithms
 from ReadTest import *
 from RobotVisualization import *
+from SearchAlgorithms.UninformedSearch import BreadthFirst
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -72,7 +73,7 @@ def transformData(width, height, lines):
 
 def main():
     
-    Test = 2
+    Test = 3
     MaxSteps = 15
     t = 2 # 2 seconds
     
@@ -81,12 +82,21 @@ def main():
     robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
     numberItems = len(items)
     numberOils = len(oils)
-
+    
+    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    #anim.done()
+    
+    
+    
+    breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    itemFound = breadth_First.constructTree()
+    
+    
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
     #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
     
-    
+    """
     ## Testing Animation
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
@@ -120,6 +130,8 @@ def main():
     
     anim.done()
     
-
+    """
+    
+    
 main()
 
