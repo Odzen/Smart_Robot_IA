@@ -1,8 +1,8 @@
 
 import sys
-sys.path.append("../Classes/") # Adds higher directory to python modules path.
+sys.path.append("..") # Adds higher directory to python modules path.
 
-import Position
+import Classes.Position
 
 """
 Class Node
@@ -49,6 +49,9 @@ class Node(object):
     
     def getOperator(self):
         return self.operator
+    
+    def getDepth(self):
+        return self.depth
     
     def getHeight(self):
         if not self.children:

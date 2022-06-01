@@ -2,11 +2,11 @@
 Class for Smart Robot, simple agent
 """
 
-from Position import Position 
-from Obstacle import Obstacle
-from Item import Item
-from Oil import Oil
-from Ship import Ship
+from .Position import Position 
+from .Obstacle import Obstacle
+from .Item import Item
+from .Oil import Oil
+from .Ship import Ship
 
 # Recieves a Maze and an initial position of the Robot
 class Robot1(object):
@@ -154,7 +154,7 @@ class Robot1(object):
         
     def moveLeft(self, firstShip, secondShip, items, oils):
         try:
-            if(not(self.isObstacleOnLeft())):
+            if(not(self.isObstacleOnLeft(self.getRobotPosition()))):
                 lookLeft = Position(self.position.getX(), self.position.getY()-1)
                 
                 self.analizeNextMovement(lookLeft, firstShip, secondShip, items, oils)
@@ -177,7 +177,7 @@ class Robot1(object):
     
     def moveUp(self, firstShip, secondShip, items, oils):
         try:
-            if(not (self.isObstacleUp())):
+            if(not (self.isObstacleUp(self.getRobotPosition()))):
                 lookUp = Position(self.position.getX()-1, self.position.getY())
                 
                 self.analizeNextMovement(lookUp, firstShip, secondShip, items, oils)
@@ -201,7 +201,7 @@ class Robot1(object):
             
     def moveDown(self, firstShip, secondShip, items, oils):
         try:
-            if(not(self.isObstacleDown())):
+            if(not(self.isObstacleDown(self.getRobotPosition()))):
                 lookDown = Position(self.position.getX()+1, self.position.getY())
                 
                 self.analizeNextMovement(lookDown, firstShip, secondShip, items, oils)
@@ -224,7 +224,7 @@ class Robot1(object):
             
     def moveRight(self, firstShip, secondShip, items, oils):
         try:
-            if(not(self.isObstacleOnRight())):
+            if(not(self.isObstacleOnRight(self.getRobotPosition()))):
                 lookRight = Position(self.position.getX(), self.position.getY()+1)
                 
                 self.analizeNextMovement(lookRight, firstShip, secondShip, items, oils)

@@ -56,7 +56,7 @@ def transformData(width, height, lines):
             # Ship 2, fuel for 20 movements
             if lines[x][y] == 4:
                 secondShipPosition = Position.Position(x, y)
-                secondShip = Ship.Ship(secondShipPosition, mainMaze, 6)
+                secondShip = Ship.Ship(secondShipPosition, mainMaze, 20)
             # Item
             if lines[x][y] == 5:
                 itemPosition = Position.Position(x, y)
@@ -73,7 +73,7 @@ def transformData(width, height, lines):
 
 def main():
     
-    Test = 3
+    Test = 1
     MaxSteps = 15
     t = 2 # 2 seconds
     
@@ -83,13 +83,12 @@ def main():
     numberItems = len(items)
     numberOils = len(oils)
     
-    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    #anim.done()
-    
-    
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    itemFound = breadth_First.constructTree()
+    path = breadth_First.constructTree()
+    breadth_First.giveDirectionsRobot(path, anim)
+    
     
     
     # Testing Movements

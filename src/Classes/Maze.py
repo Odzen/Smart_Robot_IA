@@ -2,13 +2,13 @@
 Class Maze, grid (NxM)
 """
 
-from Item import Item
-from Oil import Oil
-from Robot import *
-from Obstacle import Obstacle
-from OpenCell import OpenCell
-from Ship import Ship
-from Position import Position 
+from .Item import Item
+from .Oil import Oil
+from .Robot import *
+from .Obstacle import Obstacle
+from .OpenCell import OpenCell
+from .Ship import Ship
+from .Position import Position 
 
 
 
