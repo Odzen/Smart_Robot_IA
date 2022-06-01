@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append("../Classes") # Adds higher directory to python modules path.
+sys.path.append("../Classes/") # Adds higher directory to python modules path.
 
 import Position
 
@@ -40,11 +40,9 @@ class Node(object):
 
     def getPosition(self):
         return self.position
-        
-        #if not self.father == None:
-        #    return self.position
-        #else:
-        #    return Position.Position(99, 99)
+    
+    def setPosition(self, position):
+        self.position = position
     
     def getCost(self):
         return self.cost
@@ -66,6 +64,13 @@ class Node(object):
     
     def getIsGoal(self):
         return self.isGoal
+
+    def setIsGoal(self):
+        if self.isGoal:
+            self.isGoal = False
+        else:
+            self.isGoal = True
+            
     
     def addChild(self, position, costChild, operator):
         newChildren = Node(self, position, self.depth+1, self.cost + costChild, operator)

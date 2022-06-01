@@ -2,7 +2,6 @@
 Class Maze, grid (NxM)
 """
 
-
 from Item import Item
 from Oil import Oil
 from Robot import *
