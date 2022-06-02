@@ -19,6 +19,7 @@ from SearchAlgorithms import ia_algorithms
 from ReadTest import *
 from RobotVisualization import *
 from SearchAlgorithms.UninformedSearch import BreadthFirst
+from SearchAlgorithms.UninformedSearch import UniformCost
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -28,14 +29,14 @@ from SearchAlgorithms.UninformedSearch import BreadthFirst
 
 
 def transformData(width, height, lines):
-    
+
     mainMaze = Maze.Maze(width, height)
     items = []
     oils = []
     obstacles = []
     
-    for x in range(len(lines)):
-        for y in range(len(lines)):
+    for x in range(width):
+        for y in range(height):
             # Open Cell
             if lines[x][y] == 0:
                 openCellPosition = Position.Position(x, y)
@@ -73,7 +74,7 @@ def transformData(width, height, lines):
 
 def main():
     
-    Test = 1
+    Test = 3
     MaxSteps = 15
     t = 2 # 2 seconds
     
@@ -85,9 +86,36 @@ def main():
     
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
+    
+    # BREADTH FIRST
+    
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path = breadth_First.constructTree()
     breadth_First.giveDirectionsRobot(path, anim)
+    
+    
+    """
+    #UNIFORM COST
+    
+    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path2 = uniform_cost.constructTree()
+    uniform_cost.giveDirectionsRobot(path2, anim)
+    """
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
