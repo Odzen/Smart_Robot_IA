@@ -1,8 +1,8 @@
 
 import sys
-sys.path.append("../Classes") # Adds higher directory to python modules path.
+sys.path.append("..") # Adds higher directory to python modules path.
 
-import Position
+import Classes.Position
 
 """
 Class Node
@@ -40,17 +40,18 @@ class Node(object):
 
     def getPosition(self):
         return self.position
-        
-        #if not self.father == None:
-        #    return self.position
-        #else:
-        #    return Position.Position(99, 99)
+    
+    def setPosition(self, position):
+        self.position = position
     
     def getCost(self):
         return self.cost
     
     def getOperator(self):
         return self.operator
+    
+    def getDepth(self):
+        return self.depth
     
     def getHeight(self):
         if not self.children:
@@ -66,6 +67,13 @@ class Node(object):
     
     def getIsGoal(self):
         return self.isGoal
+
+    def setIsGoal(self):
+        if self.isGoal:
+            self.isGoal = False
+        else:
+            self.isGoal = True
+            
     
     def addChild(self, position, costChild, operator):
         newChildren = Node(self, position, self.depth+1, self.cost + costChild, operator)
@@ -75,16 +83,28 @@ class Node(object):
     def __str__(self):
         return "Node at the position: "+ str(self.position)
             
-    def subTree(self, level=0):
+    def subTreePositions(self, level=0):
         """
         Prints the subTree formed below the node
         """
         if self.isGoal:
-            ret = "\t"*level+repr(str(self.position))+"*"+"\n"
+            ret = "\t"*level+repr(str(self.position))+"* "+ (str(self.operator)) + "\n"
         else:
-            ret = "\t"*level+repr(str(self.position))+"\n"
+            ret = "\t"*level+repr(str(self.position))+ " " +(str(self.operator)) +"\n"
         for child in self.children:
-            ret += child.subTree(level+1)
+            ret += child.subTreePositions(level+1)
+        return ret
+    
+    def subTreeCost(self, level=0):
+        """
+        Prints the subTree formed below the node
+        """
+        if self.isGoal:
+            ret = "\t"*level+repr(str(self.position))+"* "+(str(self.operator)) +  "-- Cost:" + str(self.cost)+"\n"
+        else:
+            ret = "\t"*level+repr(str(self.position))+ " " +(str(self.operator)) +"-- Cost:" + str(self.cost)+"\n"
+        for child in self.children:
+            ret += child.subTreeCost(level+1)
         return ret
     
     def printDepth(self):

@@ -19,6 +19,7 @@ from SearchAlgorithms import ia_algorithms
 from ReadTest import *
 from RobotVisualization import *
 from SearchAlgorithms.UninformedSearch import BreadthFirst
+from SearchAlgorithms.UninformedSearch import UniformCost
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -28,14 +29,14 @@ from SearchAlgorithms.UninformedSearch import BreadthFirst
 
 
 def transformData(width, height, lines):
-    
+
     mainMaze = Maze.Maze(width, height)
     items = []
     oils = []
     obstacles = []
     
-    for x in range(len(lines)):
-        for y in range(len(lines)):
+    for x in range(width):
+        for y in range(height):
             # Open Cell
             if lines[x][y] == 0:
                 openCellPosition = Position.Position(x, y)
@@ -56,7 +57,7 @@ def transformData(width, height, lines):
             # Ship 2, fuel for 20 movements
             if lines[x][y] == 4:
                 secondShipPosition = Position.Position(x, y)
-                secondShip = Ship.Ship(secondShipPosition, mainMaze, 6)
+                secondShip = Ship.Ship(secondShipPosition, mainMaze, 20)
             # Item
             if lines[x][y] == 5:
                 itemPosition = Position.Position(x, y)
@@ -83,13 +84,39 @@ def main():
     numberItems = len(items)
     numberOils = len(oils)
     
-    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    #anim.done()
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
     
+    # BREADTH FIRST
     
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    itemFound = breadth_First.constructTree()
+    path = breadth_First.constructTree()
+    breadth_First.giveDirectionsRobot(path, anim)
+    
+    
+    """
+    #UNIFORM COST
+    
+    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path2 = uniform_cost.constructTree()
+    uniform_cost.giveDirectionsRobot(path2, anim)
+    """
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     # Testing Movements
