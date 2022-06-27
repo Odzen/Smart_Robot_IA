@@ -22,7 +22,6 @@ class Node(object):
     def __init__(self, father, position, depth, cost, operator):
         self.father = father
         self.position = position
-        #self.value = value
         self.children = []
         self.depth = depth
         self.cost = cost
@@ -59,8 +58,8 @@ class Node(object):
         else:
             return 1 + max(x.getDepth() for x in self.children)
     
-    def analizeGoal(self, position):
-        if position == self.position:
+    def analizeGoal(self, positionFirstItem, positionSecondItem ):
+        if positionFirstItem == self.position or positionSecondItem == self.position:
             self.isGoal = True
         else:
             self.isGoal = False
@@ -113,6 +112,7 @@ class Node(object):
     def printOperator(self):
         print("The operator to get to this node was: ", self.operator)
     
+
 """
 
 # TESTS ---

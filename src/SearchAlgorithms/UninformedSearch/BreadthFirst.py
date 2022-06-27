@@ -64,6 +64,20 @@ class Breadth_First (object):
             print("All Items Recollected!! \n")
         return self.itemsRecollected
     
+    def getPositionItemsRecollected(self):
+        positions = []
+        for item in self.getItemsRecollected():
+            position = item.getPosition()
+            positions.append(position)
+        return positions
+            
+    
+    def isAllItemsRecollected(self):
+        if len (self.itemsRecollected) == 2:
+            return True
+        else:
+            return False
+    
     def addPath(self, path):
         self.path.append(path)
     
@@ -82,7 +96,7 @@ class Breadth_First (object):
             if currentNode.getFather() == None :  #root
                 currentNode.addChild(positionUp, 1, "Up")
                 self.increaseByOneExpandedNodes()
-            elif positionUp != currentNode.getFather().getPosition(): #avoid turn back
+            elif positionUp != currentNode.getFather().getPosition()  or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
                 currentNode.addChild(positionUp, 1, "Up")
                 self.increaseByOneExpandedNodes()
                  
@@ -91,7 +105,7 @@ class Breadth_First (object):
             if currentNode.getFather() == None: #root
                 currentNode.addChild(positionDown, 1, "Down")
                 self.increaseByOneExpandedNodes()
-            elif positionDown != currentNode.getFather().getPosition(): #avoid turn back
+            elif positionDown != currentNode.getFather().getPosition() or (currentNode.getPosition()== self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
                 currentNode.addChild(positionDown, 1, "Down")
                 self.increaseByOneExpandedNodes()
             
@@ -100,7 +114,7 @@ class Breadth_First (object):
             if currentNode.getFather() == None : #root
                  currentNode.addChild(positionLeft, 1, "Left")
                  self.increaseByOneExpandedNodes()
-            elif positionLeft != currentNode.getFather().getPosition(): #avoid turn back
+            elif positionLeft != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
                 currentNode.addChild(positionLeft, 1, "Left")
                 self.increaseByOneExpandedNodes()
             
@@ -109,75 +123,70 @@ class Breadth_First (object):
             if currentNode.getFather() == None : #root   
                 currentNode.addChild(positionRight, 1, "Right")
                 self.increaseByOneExpandedNodes()
-            elif positionRight != currentNode.getFather().getPosition(): #avoid turn back
+            elif positionRight != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
                  currentNode.addChild(positionRight, 1, "Right")
                  self.increaseByOneExpandedNodes()
                  
-    def getOneItem(self, initialNode):
+    def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         while len(stack) != 0:
             currentNode = stack.pop(0)
+            print(currentNode)
+            currentNode.analizeGoal(self.first_Goal, self.second_Goal)
             
-            if self.second_Goal in self.itemsRecollected:
-                currentNode.analizeGoal(self.first_Goal)
-            elif self.first_Goal in self.itemsRecollected:
-                currentNode.analizeGoal(self.second_Goal)
-            else:
-                currentNode.analizeGoal(self.first_Goal)
-                currentNode.analizeGoal(self.second_Goal)
+            if self.isAllItemsRecollected():
+                print("Tree Depth: ", self.getDepth()) # Mistake, it is coundting all the nodes until the goal, but not the deeper ones!!
+                print("Nodes expanded: ", self.getExpandedNodes(), "\n") # Mistake, it is counting all the nodes except for the goal!!
+                print("Tree: \n", initialNode.subTreePositions(), "\n")
+                print(self.getItemsRecollected())
+            
+                return self.findPath(self.getItemsRecollected()[1])
+            
                 
             if currentNode.getIsGoal():
                 print("Found one Item", currentNode, "\n")
-                print("Tree: \n", initialNode.subTreePositions(), "\n")
-                currentNode.setIsGoal()
-                print("Nodes expanded: ", self.getExpandedNodes(), "\n") # Mistake, it is counting all the nodes except for the goal!!
                 self.setDepth(currentNode.getDepth() + self.getDepth())
-                print("Tree Depth: ", self.getDepth()) # Mistake, it is coundting all the nodes until the goal, but not the deeper ones!!
                 print("Path: ", self.findPath(currentNode), "\n")
-                return currentNode, self.findPath(currentNode)
-            
+                self.itemsRecollected.append(currentNode)
+                stack = []
+                stack.append(currentNode)
+                # Set the position of the found item, because the robot already grabbed the item, so this node is not longer a goal
+                if self.second_Goal in self.getPositionItemsRecollected():
+                    self.second_Goal = Position(99,99)
+                elif self.first_Goal in self.getPositionItemsRecollected():
+                    self.first_Goal = Position(99,99)
             
             else:
                 self.analizeMove(currentNode)
                 stack.extend(currentNode.getChildren())
+            
                 
         print("The stack is = 0")
 
     
+    # TODO -- Fix this, and construct just one tree    
     def constructTree(self):
-        
         initialNode = self.nodeRoot
-        first_node_goal, path1 = self.getOneItem(initialNode)
-        self.itemsRecollected.append(first_node_goal.getPosition())
-        newRoot = Node(None, first_node_goal.getPosition(), 0, 0, first_node_goal.getOperator()) # newRoot because if it keeps the father, there is not any possible move
+        path = self.getItems(initialNode)
+        print("Final Path: ", path)
         
-
-        second_node_goal, path2 = self.getOneItem(newRoot)
-        self.itemsRecollected.append(second_node_goal.getPosition())
-        
-        self.getItemsRecollected()
-        self.addPath(path2)
-        self.addPath(path1)
-        print("Final Path: ", self.getPath())
-        
-        return self.getPath()
+        return path
     
-    def giveDirectionsRobot(self, paths, anim):
-        for path in paths:
-            for operation in path:
-                if operation == "Left":
-                    self.robot.moveLeft(self.firstShip, self.secondShip, self.items, self.oils)
-                    anim.update()
-                elif operation == "Right":
-                    self.robot.moveRight(self.firstShip, self.secondShip, self.items, self.oils)
-                    anim.update()
-                elif operation == "Down":
-                    self.robot.moveDown(self.firstShip, self.secondShip, self.items, self.oils)
-                    anim.update()
-                elif operation == "Up":
-                    self.robot.moveUp(self.firstShip, self.secondShip, self.items, self.oils)
-                    anim.update()
+    def giveDirectionsRobot(self, path, anim):
+        for operation in path:
+            if operation == "Left":
+                self.robot.moveLeft(self.firstShip, self.secondShip, self.items, self.oils)
+                anim.update()
+            elif operation == "Right":
+                self.robot.moveRight(self.firstShip, self.secondShip, self.items, self.oils)
+                anim.update()
+            elif operation == "Down":
+                self.robot.moveDown(self.firstShip, self.secondShip, self.items, self.oils)
+                anim.update()
+            elif operation == "Up":
+                self.robot.moveUp(self.firstShip, self.secondShip, self.items, self.oils)
+                anim.update()
         anim.done()
                     
    
