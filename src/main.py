@@ -17,6 +17,9 @@ from SearchAlgorithms.InformedSearch import *
 from SearchAlgorithms.UninformedSearch import *
 from SearchAlgorithms import ia_algorithms
 from ReadTest import *
+from RobotVisualization import *
+from SearchAlgorithms.UninformedSearch import BreadthFirst
+from SearchAlgorithms.UninformedSearch import UniformCost
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -26,13 +29,14 @@ from ReadTest import *
 
 
 def transformData(width, height, lines):
-    
+
     mainMaze = Maze.Maze(width, height)
     items = []
     oils = []
+    obstacles = []
     
-    for x in range(len(lines)):
-        for y in range(len(lines)):
+    for x in range(width):
+        for y in range(height):
             # Open Cell
             if lines[x][y] == 0:
                 openCellPosition = Position.Position(x, y)
@@ -41,6 +45,7 @@ def transformData(width, height, lines):
             if lines[x][y] == 1:
                 obstaclePosition = Position.Position(x, y)
                 obstacle = Obstacle.Obstacle(obstaclePosition, mainMaze)
+                obstacles.append(obstacle)
             # Robot
             if lines[x][y] == 2:
                 robotPosition = Position.Position(x, y)
@@ -65,7 +70,7 @@ def transformData(width, height, lines):
                 oils.append(oil)
             mainMaze.setElement(Position.Position(x,y), lines[x][y])
     
-    return robot, firstShip, secondShip, items, oils, mainMaze 
+    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze 
 
 def main():
     
@@ -75,25 +80,85 @@ def main():
     
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
-    robot, firstShip, secondShip, items, oils, mainMaze = transformData(width, height, lines)
+    robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
     numberItems = len(items)
     numberOils = len(oils)
     
-# =============================================================================
-#     # Testing checks
-#     print(robot.isObstacleUp())
-#     print(robot.isObstacleOnLeft())
-#     print(robot.isObstacleOnRight())
-#     print(robot.isObstacleDown())
-# =============================================================================
-
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    
+    
+    # BREADTH FIRST
+    
+    breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path = breadth_First.constructTree()
+    breadth_First.giveDirectionsRobot(path, anim)
+    
+    
+    """
+    #UNIFORM COST
+    
+    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path2 = uniform_cost.constructTree()
+    uniform_cost.giveDirectionsRobot(path2, anim)
+    """
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
-    ia_algorithms.runIAAgent1(robot, mainMaze, items, MaxSteps, t)
+    #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
+    
+    """
+    ## Testing Animation
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
     
-    if(robot.getCollectedItems() == numberItems):
-        print("Collected All Items")
-
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveRight(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveDown(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    robot.moveLeft(firstShip, secondShip, items, oils)
+    anim.update()
+    
+    anim.done()
+    
+    """
+    
+    
 main()
 

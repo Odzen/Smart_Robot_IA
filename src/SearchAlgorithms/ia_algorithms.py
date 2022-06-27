@@ -5,8 +5,9 @@ Created on Fri Apr 29 00:15:50 2022
 @author: Juan Sebastian Velasquez Acevedo
 """
 import time
+from RobotVisualization import *
 
-def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
+def runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, maxSteps):
     """
 
     Parameters
@@ -29,6 +30,10 @@ def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
     None.
 
     """
+    
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    
+    
     print("Initial Maze:")
     print(mainMaze)
     steps = 1
@@ -105,16 +110,17 @@ def runIAAgent1(robot, mainMaze, numberItems, maxSteps, t):
             steps+=1
             
         else:
-        #(robot.isObstacleOnLeft() and robot.isObstacleUp() and robot.isObstacleOnRight() and (not(robot.isObstacleDown()))):
             print("Caso - 15")
             robot.moveDown()
             steps+=1
         
         if steps > maxSteps:
             print("Your robot took too long!! Maybe there is no way he can find the items :(")
+            anim.done()
         
-        print(mainMaze)
-        time.sleep(t)
+        anim.update()
+        #print(mainMaze)
+        #time.sleep(t)
 
 
 

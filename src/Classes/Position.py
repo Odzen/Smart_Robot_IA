@@ -32,6 +32,10 @@ class Position(object):
         new_y = y
         return Position(new_x, new_y)
 
+    
+    def __eq__(self, obj):
+        return obj.getX() == self.x and obj.getY() == self.y
+
     def __str__(self):  
         return  "(" + str(self.x) + "," +  str(self.y)  + ")"
 
