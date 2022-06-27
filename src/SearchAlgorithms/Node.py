@@ -28,8 +28,6 @@ class Node(object):
         self.operator = operator
         self.isGoal = False
 
-    #def getValue(self):
-    #    return self.value
 
     def getChildren(self):
         return self.children

@@ -93,49 +93,47 @@ class Breadth_First (object):
     def analizeMove(self, currentNode):
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
-            if currentNode.getFather() == None :  #root
+            if currentNode.getFather() == None or positionUp != currentNode.getFather().getPosition()  or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal):  #root or #avoid turn back
                 currentNode.addChild(positionUp, 1, "Up")
                 self.increaseByOneExpandedNodes()
-            elif positionUp != currentNode.getFather().getPosition()  or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
-                currentNode.addChild(positionUp, 1, "Up")
-                self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
+                
                  
         if not self.robot.isObstacleDown(currentNode.getPosition()):
             positionDown = Position(currentNode.getPosition().getX() + 1, currentNode.getPosition().getY())
-            if currentNode.getFather() == None: #root
+            if currentNode.getFather() == None or positionDown != currentNode.getFather().getPosition() or (currentNode.getPosition()== self.first_Goal or  currentNode.getPosition() == self.second_Goal): #root or #avoid turn back
                 currentNode.addChild(positionDown, 1, "Down")
                 self.increaseByOneExpandedNodes()
-            elif positionDown != currentNode.getFather().getPosition() or (currentNode.getPosition()== self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
-                currentNode.addChild(positionDown, 1, "Down")
-                self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
             
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
             positionLeft = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() - 1)
-            if currentNode.getFather() == None : #root
+            if currentNode.getFather() == None or positionLeft != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #root or #avoid turn back
                  currentNode.addChild(positionLeft, 1, "Left")
                  self.increaseByOneExpandedNodes()
-            elif positionLeft != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
-                currentNode.addChild(positionLeft, 1, "Left")
-                self.increaseByOneExpandedNodes()
+                 # Check and set depth
+                 self.setDepth(currentNode.getChildren()[0].getDepth())
             
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
             positionRight = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() +1 )
-            if currentNode.getFather() == None : #root   
+            if currentNode.getFather() == None or positionRight != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #root or #avoid turn back   
                 currentNode.addChild(positionRight, 1, "Right")
                 self.increaseByOneExpandedNodes()
-            elif positionRight != currentNode.getFather().getPosition() or (currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal): #avoid turn back
-                 currentNode.addChild(positionRight, 1, "Right")
-                 self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
                  
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         while len(stack) != 0:
             currentNode = stack.pop(0)
-            print(currentNode)
+            #print(currentNode)
             currentNode.analizeGoal(self.first_Goal, self.second_Goal)
             
             if self.isAllItemsRecollected():
+                #self.setDepth(currentNode.getDepth())
                 print("Tree Depth: ", self.getDepth()) # Mistake, it is coundting all the nodes until the goal, but not the deeper ones!!
                 print("Nodes expanded: ", self.getExpandedNodes(), "\n") # Mistake, it is counting all the nodes except for the goal!!
                 print("Tree: \n", initialNode.subTreePositions(), "\n")
@@ -146,7 +144,7 @@ class Breadth_First (object):
                 
             if currentNode.getIsGoal():
                 print("Found one Item", currentNode, "\n")
-                self.setDepth(currentNode.getDepth() + self.getDepth())
+                #self.setDepth(currentNode.getDepth() + self.getDepth())
                 print("Path: ", self.findPath(currentNode), "\n")
                 self.itemsRecollected.append(currentNode)
                 stack = []
