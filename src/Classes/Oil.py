@@ -8,15 +8,6 @@ class Oil(object):
         self.position = position
         self.maze = maze
         self.cost = 4
-        self.state = True #True if the Oil is still on the Maze, False if the Robot passed over
-    
-    
-    def getOilState(self):
-        return self.state
-    
-    def setOilState(self):
-        if self.state:
-            self.state = False 
     
     def getCost(self):
         return self.cost

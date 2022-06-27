@@ -119,12 +119,11 @@ class RobotVisualization(object):
     def _draw_oils(self, oils):
         "Returns rectangles representing the oils with the specified parameters."
         for oil in oils:
-            if oil.getOilState():
-                oilPosition = oil.getOilPosition()
-                x, y = oilPosition.getX(), oilPosition.getY()
-                x1, y1 = self._map_coords(x , y)
-                x2, y2 = self._map_coords(x + 1 , y + 1)
-                self.w.create_rectangle(x1, y1, x2, y2, fill = "red")
+            oilPosition = oil.getOilPosition()
+            x, y = oilPosition.getX(), oilPosition.getY()
+            x1, y1 = self._map_coords(x , y)
+            x2, y2 = self._map_coords(x + 1 , y + 1)
+            self.w.create_rectangle(x1, y1, x2, y2, fill = "red")
 
                     
     def _draw_items(self, items):

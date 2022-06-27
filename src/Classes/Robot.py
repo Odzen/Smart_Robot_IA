@@ -135,7 +135,6 @@ class Robot1(object):
         if(typeElement == Oil):
             for oil in oils:
                 if oil.getOilPosition() == nextPosition:
-                    oil.setOilState()
                     print("Cost to pass over next Oil: ", oil.getCost()) # To check if the cost changes when the robot is on the ship
         
         # Grab Ship
