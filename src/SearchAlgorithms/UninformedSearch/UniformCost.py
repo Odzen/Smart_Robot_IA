@@ -43,42 +43,42 @@ class UniformCost (Breadth_First):
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
             
-            if currentNode.getFather() == None :  #root
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode) :
                 currentNode.addChild(positionUp, self.costNextMovement(positionUp), "Up")
                 self.increaseByOneExpandedNodes()
-            elif positionUp != currentNode.getFather().getPosition(): #avoid turn back
-                currentNode.addChild(positionUp, self.costNextMovement(positionUp) , "Up")
-                self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
                  
         if not self.robot.isObstacleDown(currentNode.getPosition()):
             positionDown = Position(currentNode.getPosition().getX() + 1, currentNode.getPosition().getY())
             
-            if currentNode.getFather() == None: #root
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionDown, self.costNextMovement(positionDown), "Down")
                 self.increaseByOneExpandedNodes()
-            elif positionDown != currentNode.getFather().getPosition(): #avoid turn back
-                currentNode.addChild(positionDown, self.costNextMovement(positionDown) , "Down")
-                self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
             
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
             positionLeft = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() - 1)
             
-            if currentNode.getFather() == None : #root
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                  currentNode.addChild(positionLeft, self.costNextMovement(positionLeft), "Left")
                  self.increaseByOneExpandedNodes()
-            elif positionLeft != currentNode.getFather().getPosition(): #avoid turn back
-                currentNode.addChild(positionLeft, self.costNextMovement(positionLeft) , "Left")
-                self.increaseByOneExpandedNodes()
+                 # Check and set depth
+                 self.setDepth(currentNode.getChildren()[0].getDepth())
             
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
             positionRight = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() +1 )
             
-            if currentNode.getFather() == None : #root   
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):   
                 currentNode.addChild(positionRight, self.costNextMovement(positionRight), "Right")
                 self.increaseByOneExpandedNodes()
-            elif positionRight != currentNode.getFather().getPosition(): #avoid turn back
-                 currentNode.addChild(positionRight, self.costNextMovement(positionRight) , "Right")
-                 self.increaseByOneExpandedNodes()
+                # Check and set depth
+                self.setDepth(currentNode.getChildren()[0].getDepth())
+    
+     
+    
+    """
     #Override
     def getOneItem(self, initialNode):
         stack = []
@@ -111,6 +111,7 @@ class UniformCost (Breadth_First):
                 
         print("The stack is = 0")
     
+    
     #Override
     def constructTree(self):
         initialNode = self.nodeRoot
@@ -128,3 +129,5 @@ class UniformCost (Breadth_First):
         print("Final Path: ", self.getPath())
         
         return self.getPath()
+
+    """

@@ -84,21 +84,24 @@ def main():
     
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     
-    
+    """
     # BREADTH FIRST
     
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path = breadth_First.constructTree()
-    breadth_First.giveDirectionsRobot(path, anim)
-    
+    path_breadth = breadth_First.constructPath()
+    breadth_First.giveDirectionsRobot(path_breadth, anim)
+    breadth_First.report(path_breadth)
     
     """
+    
+    
     #UNIFORM COST
     
     uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path2 = uniform_cost.constructTree()
-    uniform_cost.giveDirectionsRobot(path2, anim)
-    """
+    path_cost = uniform_cost.constructPath()
+    uniform_cost.giveDirectionsRobot(path_cost, anim)
+    uniform_cost.report(path_cost)
+    
     
     
     

@@ -178,9 +178,6 @@ class Breadth_First (object):
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
             
             if self.isAllItemsRecollected():
-                print("Tree Depth: ", self.getDepth())
-                print("Nodes expanded: ", self.getExpandedNodes(), "\n")
-                #print("Tree: \n", initialNode.subTreePositions(), "\n")
                 return self.findPath(self.getItemsRecollected()[1])
             
             if currentNode.getIsGoal():
@@ -188,8 +185,8 @@ class Breadth_First (object):
                 #self.setDepth(currentNode.getDepth() + self.getDepth())
                 print("Path: ", self.findPath(currentNode), "\n")
                 self.itemsRecollected.append(currentNode)
-                stack = []
-                stack.append(currentNode)
+                stack = [] # Clean stack
+                stack.append(currentNode) # Add current Node as root
                 # Set the position of the found item, because the robot already grabbed the item, so this node is not longer a goal
                 # I set them to (99,99), to no to interfer with the analizeGoal method 
                 if temp_Second_goal in self.getPositionItemsRecollected():
@@ -202,11 +199,8 @@ class Breadth_First (object):
                 stack.extend(currentNode.getChildren())
                 
       
-    def constructTree(self):
-        initialNode = self.nodeRoot
-        path = self.getItems(initialNode)
-        print("Final Path: ", path)
-        
+    def constructPath(self):
+        path = self.getItems(self.nodeRoot)
         return path
     
     def giveDirectionsRobot(self, path, anim):
@@ -224,6 +218,14 @@ class Breadth_First (object):
                 self.robot.moveUp(self.firstShip, self.secondShip, self.items, self.oils)
                 anim.update()
         anim.done()
+        
+
+    def report(self, path):
+        print("REPORT: " , "\n")
+        print("Tree: \n", self.nodeRoot.subTreeCost(), "\n")
+        print("Final Path: ", path)
+        print("Tree Depth: ", self.getDepth())
+        print("Nodes expanded: ", self.getExpandedNodes(), "\n")
                     
    
         
