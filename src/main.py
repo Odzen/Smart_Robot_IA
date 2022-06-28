@@ -26,8 +26,6 @@ from SearchAlgorithms.UninformedSearch import UniformCost
 #import ia_algorithms
 
 
-
-
 def transformData(width, height, lines):
 
     mainMaze = Maze.Maze(width, height)

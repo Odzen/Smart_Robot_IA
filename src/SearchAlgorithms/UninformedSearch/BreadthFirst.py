@@ -88,33 +88,63 @@ class Breadth_First (object):
             tempPath.append(currentNode.getOperator())
             currentNode = currentNode.getFather()
         return tempPath[::-1]
+    
+    # Aux function for method analizeMove()
+    # If the current node is the root node
+    def isRootNode(self, currentNode):
+        if currentNode.getFather() == None:
+            return True
+        else:
+            return False
         
+    # Aux function for method analizeMove()
+    # If the position where I want to move it's not the previous one
+    def isPreviousOne(self, nextPosition, currentNode):
+        if nextPosition != currentNode.getFather().getPosition():
+            return True
+        else:
+            return False
+    
+    # Aux function for method analizeMove()
+    # If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the items
+    def justCatchedItem(self, currentNode):
+        if currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal:
+            return True
+        else: 
+            return False
+    
+    # Aux function for method analizeMove()
+    # If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the ships
+    def justCatchedShip(self, currentNode):
+        if currentNode.getPosition() == self.firstShip.getShipPosition() or  currentNode.getPosition() == self.secondShip.getShipPosition():
+            return True
+        else: 
+            return False
     
     """
     Checks if there is an obstacle in any direction
     If not checks the following, using conjuntions
-        1. If it is the root node -- (currentNode.getFather() == None)
-        2. If the position where I want to move it's not the previous one -- positionUp != currentNode.getFather().getPosition()
+        1. If it is the root node -- isRootNode(self, currentNode)
+        2. If the position where I want to move it's not the previous one -- isPreviousOne(self, nextPosition, currentNode)
         3. If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the items or ships in the previous move
-            a. If the robot just grabbed one of the items, then it allows to turn back -- currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal
-            b. If the robot just grabbed the one of the ships, then it allows to turn back
+            a. If the robot just grabbed one of the items, then it allows to turn back -- justCatchedItem(self, currentNode)
+            b. If the robot just grabbed the one of the ships, then it allows to turn back -- justCatchedShip(self, currentNode)
             
     """
     def analizeMove(self, currentNode):
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
-            if currentNode.getFather() == None or positionUp != currentNode.getFather().getPosition()  or currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal:
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionUp, 1, "Up")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
-                
                  
         if not self.robot.isObstacleDown(currentNode.getPosition()):
             positionDown = Position(currentNode.getPosition().getX() + 1, currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
-            if currentNode.getFather() == None or positionDown != currentNode.getFather().getPosition() or currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal:
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionDown, 1, "Down")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
@@ -123,7 +153,7 @@ class Breadth_First (object):
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
             positionLeft = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
-            if currentNode.getFather() == None or positionLeft != currentNode.getFather().getPosition() or currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal:
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                  currentNode.addChild(positionLeft, 1, "Left")
                  self.increaseByOneExpandedNodes()
                  # Check and set depth
@@ -132,7 +162,7 @@ class Breadth_First (object):
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
             positionRight = Position(currentNode.getPosition().getX() , currentNode.getPosition().getY() +1 )
             # If that checks --> root or avoid turn back
-            if currentNode.getFather() == None or positionRight != currentNode.getFather().getPosition() or currentNode.getPosition() == self.first_Goal or  currentNode.getPosition() == self.second_Goal: 
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode)  or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode): 
                 currentNode.addChild(positionRight, 1, "Right")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
@@ -148,14 +178,11 @@ class Breadth_First (object):
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
             
             if self.isAllItemsRecollected():
-                print("Tree Depth: ", self.getDepth()) # Mistake, it is coundting all the nodes until the goal, but not the deeper ones!!
-                print("Nodes expanded: ", self.getExpandedNodes(), "\n") # Mistake, it is counting all the nodes except for the goal!!
+                print("Tree Depth: ", self.getDepth())
+                print("Nodes expanded: ", self.getExpandedNodes(), "\n")
                 #print("Tree: \n", initialNode.subTreePositions(), "\n")
-    
-            
                 return self.findPath(self.getItemsRecollected()[1])
             
-                
             if currentNode.getIsGoal():
                 print("Found one Item", currentNode, "\n")
                 #self.setDepth(currentNode.getDepth() + self.getDepth())
@@ -173,12 +200,8 @@ class Breadth_First (object):
             else:
                 self.analizeMove(currentNode)
                 stack.extend(currentNode.getChildren())
-            
                 
-        print("The stack is = 0")
-
-    
-    # TODO -- Fix this, and construct just one tree    
+      
     def constructTree(self):
         initialNode = self.nodeRoot
         path = self.getItems(initialNode)
