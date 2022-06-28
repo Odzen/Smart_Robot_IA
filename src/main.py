@@ -74,7 +74,7 @@ def transformData(width, height, lines):
 
 def main():
     
-    Test = 4
+    Test = 1
     MaxSteps = 15
     t = 2 # 2 seconds
     
