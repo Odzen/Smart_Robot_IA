@@ -109,6 +109,13 @@ class Node(object):
 
     def printOperator(self):
         print("The operator to get to this node was: ", self.operator)
+        
+    def __gt__(self, other):
+        if isinstance(other, Node):
+            if self.cost > other.cost:
+                return True
+            if self.cost < other.cost:
+                return False
     
 
 """

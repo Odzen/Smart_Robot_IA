@@ -76,8 +76,37 @@ class UniformCost (Breadth_First):
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
     
-     
-    
+    #Override
+    def getItems(self, initialNode):
+        stack = []
+        stack.append(initialNode)
+        temp_First_goal = self.first_Goal
+        temp_Second_goal = self.second_Goal
+        while len(stack) != 0:
+            stack.sort()
+            currentNode = stack.pop(0)
+            currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
+            
+            if self.isAllItemsRecollected():
+                return self.findPath(self.getItemsRecollected()[1])
+            
+            if currentNode.getIsGoal():
+                print("Found one Item", currentNode, "\n")
+                #self.setDepth(currentNode.getDepth() + self.getDepth())
+                print("Path: ", self.findPath(currentNode), "\n")
+                self.itemsRecollected.append(currentNode)
+                stack = [] # Clean stack
+                stack.append(currentNode) # Add current Node as root
+                # Set the position of the found item, because the robot already grabbed the item, so this node is not longer a goal
+                # I set them to (99,99), to no to interfer with the analizeGoal method 
+                if temp_Second_goal in self.getPositionItemsRecollected():
+                    temp_Second_goal = Position(99,99)
+                elif temp_First_goal in self.getPositionItemsRecollected():
+                    temp_First_goal = Position(99,99)
+            
+            else:
+                self.analizeMove(currentNode)
+                stack.extend(currentNode.getChildren())
     """
     #Override
     def getOneItem(self, initialNode):
