@@ -12,7 +12,7 @@ from Classes import Robot
 from Classes import Obstacle
 from Classes import OpenCell
 from Classes import Ship
-from Classes import Position 
+from Classes import Position
 from SearchAlgorithms.InformedSearch import *
 from SearchAlgorithms.UninformedSearch import *
 from SearchAlgorithms import ia_algorithms
@@ -32,7 +32,7 @@ def transformData(width, height, lines):
     items = []
     oils = []
     obstacles = []
-    
+
     for x in range(width):
         for y in range(height):
             # Open Cell
@@ -66,24 +66,26 @@ def transformData(width, height, lines):
                 oilPosition = Position.Position(x, y)
                 oil = Oil.Oil(oilPosition, mainMaze)
                 oils.append(oil)
-            mainMaze.setElement(Position.Position(x,y), lines[x][y])
-    
-    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze 
+            mainMaze.setElement(Position.Position(x, y), lines[x][y])
+
+    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze
+
 
 def main():
-    
+
     Test = 1
     MaxSteps = 15
-    t = 2 # 2 seconds
-    
+    t = 2  # 2 seconds
+
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
-    robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
+    robot, firstShip, secondShip, items, oils, obstacles, mainMaze = transformData(
+        width, height, lines)
     numberItems = len(items)
     numberOils = len(oils)
-    
-    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    
+
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils,
+                              obstacles, mainMaze)
     """
     # BREADTH FIRST
     
@@ -93,37 +95,18 @@ def main():
     breadth_First.report(path_breadth)
     
     """
-    
-    
+
     #UNIFORM COST
-    
-    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+
+    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items,
+                                           oils, obstacles, mainMaze)
     path_cost = uniform_cost.constructPath()
     uniform_cost.giveDirectionsRobot(path_cost, anim)
     uniform_cost.report(path_cost)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     # Testing Movements
     # IA Agent 1, Simple algorithm to check movements
     #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
-    
     """
     ## Testing Animation
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
@@ -159,7 +142,6 @@ def main():
     anim.done()
     
     """
-    
-    
-main()
 
+
+main()

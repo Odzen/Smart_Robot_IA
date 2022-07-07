@@ -1,6 +1,8 @@
 """
 Class Position
 """
+
+
 class Position(object):
     """
     A Position represents a location in a two-dimensional room.
@@ -11,13 +13,13 @@ class Position(object):
         """
         self.x = x
         self.y = y
-        
+
     def getX(self):
         return self.x
-    
+
     def getY(self):
         return self.y
-    
+
     def setPosition(self, x, y):
         """
         Computes and returns the new Position after a single clock-tick has
@@ -32,10 +34,8 @@ class Position(object):
         new_y = y
         return Position(new_x, new_y)
 
-    
     def __eq__(self, obj):
         return obj.getX() == self.x and obj.getY() == self.y
 
-    def __str__(self):  
-        return  "(" + str(self.x) + "," +  str(self.y)  + ")"
-
+    def __str__(self):
+        return "(" + str(self.x) + "," + str(self.y) + ")"
