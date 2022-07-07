@@ -18,7 +18,7 @@ class ReadAndWrite(object):
         Function to read the file under the format established by the task. 
         The name is changed in the global variable "nameToRead". (Don't modify!)
         '''
-        with open("../MazesTests/in/"+self.nameToRead+str(self.testNumber)+".txt", "r") as f:
+        with open("./MazesTests/in/"+self.nameToRead+str(self.testNumber)+".txt", "r") as f:
             content = f.read().split('\n')
             lines = []
             width = len(content)
