@@ -23,49 +23,63 @@ class UniformCost(Breadth_First):
             positionUp = Position(currentNode.getPosition().getX() - 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionUp, 1, "Up")
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
+                if not self.wasVisited(currentNode):        
+                    currentNode.addChild(positionUp, 1, "Up")
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleDown(currentNode.getPosition()):
             positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionDown, 1, "Down")
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
+                if not self.wasVisited(currentNode):
+                    currentNode.addChild(positionDown, 1, "Down")
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionLeft, 1, "Left")
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
+                if not self.wasVisited(currentNode):
+                    currentNode.addChild(positionLeft, 1, "Left")
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionRight, 1, "Right")
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
+                if not self.wasVisited(currentNode):
+                    currentNode.addChild(positionRight, 1, "Right")
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
 
-    #Override
+    def wasVisited(self, currentNode):
+        father_node = currentNode.getFather()
+        while father_node != None:
+            if currentNode.position == father_node.position:
+                return True
+            father_node = father_node.getFather()
+        
+        return False
+    
+    
+    #Override, main algorithm
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort()
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
-
+            
+            
             if self.isAllItemsRecollected():
                 return self.findPath(self.getItemsRecollected()[1])
 
@@ -85,4 +99,4 @@ class UniformCost(Breadth_First):
 
             else:
                 self.analizeMove(currentNode)
-                stack.extend(currentNode.getChildren())
+                stack = currentNode.getChildren() + stack #Insert children on front to follow the Depth First dynamic

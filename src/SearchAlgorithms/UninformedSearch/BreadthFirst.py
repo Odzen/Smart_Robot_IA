@@ -171,6 +171,7 @@ class Breadth_First(object):
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
+    # main algorithm
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
@@ -199,7 +200,7 @@ class Breadth_First(object):
 
             else:
                 self.analizeMove(currentNode)
-                stack.extend(currentNode.getChildren())
+                stack.append(currentNode.getChildren())
 
     def constructPath(self):
         path = self.getItems(self.nodeRoot)

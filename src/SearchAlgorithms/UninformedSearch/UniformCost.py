@@ -78,14 +78,14 @@ class UniformCost(Breadth_First):
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
-    #Override
+    #Override, main algorithm
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort()
+            stack.sort() # I sort by cost, fto get always the one of the minor cost
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 
