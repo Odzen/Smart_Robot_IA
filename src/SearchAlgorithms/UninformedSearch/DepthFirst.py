@@ -1,5 +1,5 @@
 """
-Depth Cost
+Depth First algorithm
 """
 from .BreadthFirst import Breadth_First
 from ..Node import Node

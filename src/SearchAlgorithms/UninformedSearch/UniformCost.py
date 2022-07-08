@@ -79,6 +79,7 @@ class UniformCost(Breadth_First):
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
     #Override, main algorithm
+    # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use the cost for sorting
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
@@ -86,6 +87,7 @@ class UniformCost(Breadth_First):
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
             stack.sort(key=lambda node: node.cost) # I sort by cost, fto get always the one of the minor cost
+            #stack.sort() # I can do it just like this as well, because of the __eq__ method on the Node class
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 

@@ -23,8 +23,9 @@ class Node(object):
         self.position = position
         self.children = []
         self.depth = depth
-        self.cost = cost
-        self.min_manhattan = 100 # The minimun distance between the node and the two items
+        self.cost = cost # Acumulative cost, considering ships and oil. This is use in a_star and cost_uniform
+        self.min_manhattan = 100 # The minimun distance between the node and the two items for avara and a_star
+        self.heuristic = 0 # Heuristic for a_star
         self.operator = operator
         self.isGoal = False
 
@@ -72,10 +73,11 @@ class Node(object):
     def getMinDistance(self, positionFirstItem, positionSecondItem):
         distances_to_both_items = self.calculateManhattanToBothItems(positionFirstItem, positionSecondItem)
         distances_to_both_items.sort()
-        print(distances_to_both_items)
         self.min_manhattan = distances_to_both_items[0]
-        print(self.min_manhattan)
         return self.min_manhattan
+    
+    def getHeuristic(self, positionFirstItem, positionSecondItem):
+        return self.getCost() + self.getMinDistance(positionFirstItem, positionSecondItem)
 
     def getIsGoal(self):
         return self.isGoal

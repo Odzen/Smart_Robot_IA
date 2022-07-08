@@ -1,5 +1,5 @@
 """
-Avara Algorithm
+A* Algorithm
 """
 from ..Node import Node
 import Classes.Maze
@@ -8,22 +8,22 @@ from Classes.Position import Position
 from Classes.Item import Item
 from Classes.Ship import Ship
 from Classes.Oil import Oil
-from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
+from SearchAlgorithms.InformedSearch.Avara import Avara
 
 
-class Avara(UniformCost):
+class AStar(Avara):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 
     #Override, main algorithm
-    # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use manhattan for sorting
+    # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use the heuristic for sorting
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort(key=lambda node: node.getMinDistance(self.first_Goal, self.second_Goal)) # I sort by manhattan, to get always the one of the minor distance
+            stack.sort(key=lambda node: node.getHeuristic(self.first_Goal, self.second_Goal)) # I sort by Heuristic (cost + manhattan), to get always the one of the minor value possible
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 

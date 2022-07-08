@@ -19,7 +19,7 @@ from SearchAlgorithms.UninformedSearch import BreadthFirst
 from SearchAlgorithms.UninformedSearch import UniformCost
 from SearchAlgorithms.UninformedSearch import DepthFirst
 from SearchAlgorithms.InformedSearch import Avara
-from SearchAlgorithms.InformedSearch import AStart
+from SearchAlgorithms.InformedSearch import AStar
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -114,6 +114,7 @@ def main():
     depth_First.report(path_depth)
     """
     
+    
     # AVARA
     avara = Avara.Avara(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     avara_path = avara.constructPath()
@@ -121,15 +122,14 @@ def main():
     avara.giveDirectionsRobot(avara_path, anim)
     avara.report(avara_path)
     
+    
     """
     #A_STAR
-    a_star = AStart.AStart(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     a_star_path = a_star.constructPath()
     print(a_star_path)
     a_star.giveDirectionsRobot(a_star_path, anim)
     a_star.report(a_star_path)
     """
-    
-    # A_STAR
 
 main()
