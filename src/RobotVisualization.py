@@ -103,7 +103,7 @@ class RobotVisualization(object):
 
     def _status_string(self, time, items, fuel1, fuel2):
         "Returns an appropriate status string to print."
-        return "Time: %04d; Items Collected: %d; Ship 1 Fuel: %d; Ship 2 Fuel: %d " % \
+        return "Steps: %04d; Items Collected: %d; Ship 1 Fuel: %d; Ship 2 Fuel: %d " % \
             (time, items, fuel1, fuel2)
 
     def _draw_robot(self, position):
