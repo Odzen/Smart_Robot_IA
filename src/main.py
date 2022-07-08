@@ -104,44 +104,5 @@ def main():
     uniform_cost.giveDirectionsRobot(path_cost, anim)
     uniform_cost.report(path_cost)
 
-    # Testing Movements
-    # IA Agent 1, Simple algorithm to check movements
-    #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
-    """
-    ## Testing Animation
-    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    
-    
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    
-    anim.done()
-    
-    """
-
 
 main()
