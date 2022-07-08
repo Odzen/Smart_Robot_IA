@@ -76,7 +76,8 @@ def main():
     Test = 1 # The number of text that I want to try, the tests are in the folder MazeTests/in
     # 2 seconds, the delay that I want to give to each frame of movement of my robot, if I not pass this to RobotVisualization, the robot will do 1 movement per second by default
     # Basically, if you want the robot move faster, decrease this value and pass this as an argument of RobotVisualization class
-    delay = 0.5   
+    # THE LESS DELAY, THE FASTER THE ROBOT WILL MOVE
+    delay = 0.3   
 
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
