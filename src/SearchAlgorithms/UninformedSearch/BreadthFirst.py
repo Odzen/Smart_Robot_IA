@@ -4,6 +4,7 @@ BFS - Breadth First Search
 
 #import sys
 #sys.path.append("..") # Adds higher directory to python modules path.
+from typing import List
 from Classes.Position import Position
 from SearchAlgorithms.InterfaceSearch import InterfaceSearch 
 
@@ -92,4 +93,9 @@ class Breadth_First(InterfaceSearch):
 
             else:
                 self.analizeMove(currentNode)
-                stack.append(currentNode.getChildren())
+                stack.extend(currentNode.getChildren())
+    
+
+    def constructPath(self):
+        path = self.getItems(self.nodeRoot)
+        return path

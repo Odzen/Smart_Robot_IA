@@ -149,10 +149,6 @@ class InterfaceSearch(object):
 
         return cost
 
-    def constructPath(self):
-        path = self.getItems(self.nodeRoot)
-        return path
-
     def giveDirectionsRobot(self, path, anim):
         for operation in path:
             if operation == "Left":
