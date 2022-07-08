@@ -4,14 +4,8 @@ BFS - Breadth First Search
 
 #import sys
 #sys.path.append("..") # Adds higher directory to python modules path.
-from ..Node import Node
-import Classes.Maze
-import Classes.Robot
 from Classes.Position import Position
-from Classes.Item import Item
-from Classes.Ship import Ship
-from Classes.Oil import Oil
-from ..InterfaceSearch import InterfaceSearch 
+from SearchAlgorithms.InterfaceSearch import InterfaceSearch 
 
 
 class Breadth_First(InterfaceSearch):

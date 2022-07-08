@@ -1,14 +1,8 @@
 """
 Uniform Cost
 """
-from .BreadthFirst import Breadth_First
-from ..Node import Node
-import Classes.Maze
-import Classes.Robot
+from SearchAlgorithms.UninformedSearch.BreadthFirst import Breadth_First
 from Classes.Position import Position
-from Classes.Item import Item
-from Classes.Ship import Ship
-from Classes.Oil import Oil
 
 
 class UniformCost(Breadth_First):

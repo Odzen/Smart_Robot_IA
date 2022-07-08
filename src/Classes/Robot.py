@@ -2,11 +2,11 @@
 Class for Smart Robot, simple agent
 """
 
-from .Position import Position
-from .Obstacle import Obstacle
-from .Item import Item
-from .Oil import Oil
-from .Ship import Ship
+from Classes.Position import Position
+from Classes.Obstacle import Obstacle
+from Classes.Item import Item
+from Classes.Oil import Oil
+from Classes.Ship import Ship
 
 
 # Recieves a Maze and an initial position of the Robot

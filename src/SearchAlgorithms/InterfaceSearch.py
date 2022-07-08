@@ -4,10 +4,7 @@ Interface Search, here are methods that will be used for all the search algorith
 
 #import sys
 #sys.path.append("..") # Adds higher directory to python modules path.
-from .Node import Node
-import Classes.Maze
-import Classes.Robot
-from Classes.Position import Position
+from SearchAlgorithms.Node import Node
 from Classes.Item import Item
 from Classes.Ship import Ship
 from Classes.Oil import Oil

@@ -1,13 +1,7 @@
 """
 Avara Algorithm
 """
-from ..Node import Node
-import Classes.Maze
-import Classes.Robot
 from Classes.Position import Position
-from Classes.Item import Item
-from Classes.Ship import Ship
-from Classes.Oil import Oil
 from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 

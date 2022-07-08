@@ -125,6 +125,7 @@ def main():
     avara.giveDirectionsRobot(avara_path, anim)
     avara.report(avara_path)
     """
+    
     """
     #A_STAR
     a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
