@@ -1,26 +1,23 @@
 """
-Uniform Cost
+Avara Algorithm
 """
-from SearchAlgorithms.UninformedSearch.BreadthFirst import Breadth_First
 from Classes.Position import Position
+from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 
-class UniformCost(Breadth_First):
-    def __init__(self, robot, firstShip, secondShip, items, oils, obstacles,
-                 mainMaze):
-        super().__init__(robot, firstShip, secondShip, items, oils, obstacles,
-                         mainMaze)
+class Avara(UniformCost):
+    def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
+        super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 
-    #Override, main algorithm
-    # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use the cost for sorting
+    #Override, MAIN algorithm
+    # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use manhattan for sorting
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort(key=lambda node: node.cost) # CHANGE HERE COMPARED TO SUPER -> I sort by cost, to get always the one with minor cost
-            #stack.sort() # I can do it just like this as well, because of the __eq__ method on the Node class
+            stack.sort(key=lambda node: node.getMinDistance(self.first_Goal, self.second_Goal)) # CHANGE HERE COMPARED TO SUPER -> I sort by manhattan, to get always the one with minor distance
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 

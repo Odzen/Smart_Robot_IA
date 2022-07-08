@@ -12,20 +12,18 @@ from Classes import Robot
 from Classes import Obstacle
 from Classes import OpenCell
 from Classes import Ship
-from Classes import Position 
-from SearchAlgorithms.InformedSearch import *
-from SearchAlgorithms.UninformedSearch import *
-from SearchAlgorithms import ia_algorithms
+from Classes import Position
 from ReadTest import *
 from RobotVisualization import *
 from SearchAlgorithms.UninformedSearch import BreadthFirst
 from SearchAlgorithms.UninformedSearch import UniformCost
+from SearchAlgorithms.UninformedSearch import DepthFirst
+from SearchAlgorithms.InformedSearch import Avara
+from SearchAlgorithms.InformedSearch import AStar
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
 #import ia_algorithms
-
-
 
 
 def transformData(width, height, lines):
@@ -34,7 +32,7 @@ def transformData(width, height, lines):
     items = []
     oils = []
     obstacles = []
-    
+
     for x in range(width):
         for y in range(height):
             # Open Cell
@@ -68,97 +66,67 @@ def transformData(width, height, lines):
                 oilPosition = Position.Position(x, y)
                 oil = Oil.Oil(oilPosition, mainMaze)
                 oils.append(oil)
-            mainMaze.setElement(Position.Position(x,y), lines[x][y])
-    
-    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze 
+            mainMaze.setElement(Position.Position(x, y), lines[x][y])
+
+    return robot, firstShip, secondShip, items, oils, obstacles, mainMaze
+
 
 def main():
-    
-    Test = 1
-    MaxSteps = 15
-    t = 2 # 2 seconds
-    
+
+    Test = 1 # The number of text that I want to try, the tests are in the folder MazeTests/in
+    # 2 seconds, the delay that I want to give to each frame of movement of my robot, if I not pass this to RobotVisualization, the robot will do 1 movement per second by default
+    # Basically, if you want the robot move faster, decrease this value and pass this as an argument of RobotVisualization class
+    # THE LESS DELAY, THE FASTER THE ROBOT WILL MOVE
+    delay = 0.3   
+
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
-    robot, firstShip, secondShip, items, oils,obstacles, mainMaze = transformData(width, height, lines)
-    numberItems = len(items)
-    numberOils = len(oils)
-    
-    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    robot, firstShip, secondShip, items, oils, obstacles, mainMaze = transformData(width, height, lines)
+
+    # RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, optional : delay)
+    anim = RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay)
     
     
     # BREADTH FIRST
-    
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path = breadth_First.constructTree()
-    breadth_First.giveDirectionsRobot(path, anim)
+    path_breadth = breadth_First.constructPath()
+    breadth_First.giveDirectionsRobot(path_breadth, anim)
+    breadth_First.report(path_breadth)
     
+    
+    """
+    # DEPTH FIRST
+    depth_First = DepthFirst.DepthFirst(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path_depth = depth_First.constructPath()
+    print(path_depth)
+    depth_First.giveDirectionsRobot(path_depth, anim)
+    depth_First.report(path_depth)
+    """
     
     """
     #UNIFORM COST
-    
     uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path2 = uniform_cost.constructTree()
-    uniform_cost.giveDirectionsRobot(path2, anim)
+    path_cost = uniform_cost.constructPath()
+    uniform_cost.giveDirectionsRobot(path_cost, anim)
+    uniform_cost.report(path_cost)
     """
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # Testing Movements
-    # IA Agent 1, Simple algorithm to check movements
-    #ia_algorithms.runIAAgent1(robot, firstShip, secondShip, items, numberItems, oils, obstacles, mainMaze, MaxSteps)
-    
     """
-    ## Testing Animation
-    anim = RobotVisualization(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    
-    
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveRight(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveDown(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    robot.moveLeft(firstShip, secondShip, items, oils)
-    anim.update()
-    
-    anim.done()
-    
+    # AVARA
+    avara = Avara.Avara(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    avara_path = avara.constructPath()
+    print(avara_path)
+    avara.giveDirectionsRobot(avara_path, anim)
+    avara.report(avara_path)
     """
     
-    
-main()
+    """
+    #A_STAR
+    a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    a_star_path = a_star.constructPath()
+    print(a_star_path)
+    a_star.giveDirectionsRobot(a_star_path, anim)
+    a_star.report(a_star_path)
+    """
 
+main()
