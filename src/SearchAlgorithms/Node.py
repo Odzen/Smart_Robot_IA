@@ -72,7 +72,9 @@ class Node(object):
     def getMinDistance(self, positionFirstItem, positionSecondItem):
         distances_to_both_items = self.calculateManhattanToBothItems(positionFirstItem, positionSecondItem)
         distances_to_both_items.sort()
+        print(distances_to_both_items)
         self.min_manhattan = distances_to_both_items[0]
+        print(self.min_manhattan)
         return self.min_manhattan
 
     def getIsGoal(self):

@@ -12,30 +12,8 @@ from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 
 class Avara(UniformCost):
-    def __init__(self, robot, firstShip, secondShip, items, oils, obstacles,
-                 mainMaze):
-        super().__init__(robot, firstShip, secondShip, items, oils, obstacles,
-                         mainMaze)
-    
-    """
-    def get_manhattan_distance(p, q):
-        # sum of absolute difference between coordinates
-        distance = 0
-        for p_i,q_i in zip(p,q):
-            distance += abs(p_i - q_i)
-    
-        return distance
-    
-    def manhattanToBothItems(self, nexPosition):
-        to_first_item = self.get_manhattan_distance(nexPosition, self.first_Goal)
-        to_second_item = self.get_manhattan_distance(nexPosition, self.second_Goal)
-        return (to_first_item, to_second_item)
-    
-    def minDistance(self, nexPosition):
-        distances_to_both_items = self.manhattanToBothItems(nexPosition)
-        distances_to_both_items.sort()
-        return distances_to_both_items[0]
-    """
+    def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
+        super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 
     #Override
     def analizeMove(self, currentNode):
