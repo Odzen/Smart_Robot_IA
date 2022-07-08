@@ -96,7 +96,7 @@ def main():
     breadth_First.report(path_breadth)
     
     """
-    """"
+    """
     #UNIFORM COST
 
     uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items,
@@ -109,6 +109,7 @@ def main():
     # DEPTH FIRST
     depth_First = DepthFirst.DepthFirst(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path_depth = depth_First.constructPath()
+    print(path_depth)
     depth_First.giveDirectionsRobot(path_depth, anim)
     depth_First.report(path_depth)
     

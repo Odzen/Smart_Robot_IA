@@ -11,7 +11,7 @@ from Classes.Ship import Ship
 from Classes.Oil import Oil
 
 
-class UniformCost(Breadth_First):
+class DepthFirst(Breadth_First):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles,
                  mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles,
@@ -63,9 +63,10 @@ class UniformCost(Breadth_First):
         father_node = currentNode.getFather()
         while father_node != None:
             if currentNode.position == father_node.position:
+                print("Was visited")
                 return True
             father_node = father_node.getFather()
-        
+        print("Was NOT visited")
         return False
     
     
@@ -77,11 +78,14 @@ class UniformCost(Breadth_First):
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
             currentNode = stack.pop(0)
+            
+            print(currentNode)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
             
             
             if self.isAllItemsRecollected():
-                return self.findPath(self.getItemsRecollected()[1])
+                print(self.getItemsRecollected())
+                return self.findPath(self.getItemsRecollected()[1]) # Gets the second element, because this is the final one. The first one [0] is the path to the first item founded
 
             if currentNode.getIsGoal():
                 print("Found one Item", currentNode, "\n")

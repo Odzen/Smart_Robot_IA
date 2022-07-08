@@ -182,7 +182,7 @@ class Breadth_First(object):
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 
             if self.isAllItemsRecollected():
-                return self.findPath(self.getItemsRecollected()[1])
+                return self.findPath(self.getItemsRecollected()[1]) # Gets the second element, because this is the final one. The first one [0] is the path to the first item founded
 
             if currentNode.getIsGoal():
                 print("Found one Item", currentNode, "\n")
