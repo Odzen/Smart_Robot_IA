@@ -24,6 +24,7 @@ class Node(object):
         self.children = []
         self.depth = depth
         self.cost = cost
+        self.min_manhattan = 100 # The minimun distance between the node and the two items
         self.operator = operator
         self.isGoal = False
 
@@ -41,6 +42,9 @@ class Node(object):
 
     def getCost(self):
         return self.cost
+    
+    def getManhattan(self):
+        return self.manhattan
 
     def getOperator(self):
         return self.operator
@@ -59,6 +63,17 @@ class Node(object):
             self.isGoal = True
         else:
             self.isGoal = False
+            
+    def calculateManhattanToBothItems(self, positionFirstItem, positionSecondItem):
+        to_first_item = Classes.Position.Position.get_manhattan_distance(self.position , positionFirstItem)
+        to_second_item = Classes.Position.Position.get_manhattan_distance(self.position, positionSecondItem)
+        return [to_first_item, to_second_item]
+    
+    def getMinDistance(self, positionFirstItem, positionSecondItem):
+        distances_to_both_items = self.calculateManhattanToBothItems(positionFirstItem, positionSecondItem)
+        distances_to_both_items.sort()
+        self.min_manhattan = distances_to_both_items[0]
+        return self.min_manhattan
 
     def getIsGoal(self):
         return self.isGoal

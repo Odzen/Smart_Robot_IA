@@ -1,7 +1,6 @@
 """
 Uniform Cost
 """
-from .BreadthFirst import Breadth_First
 from ..Node import Node
 import Classes.Maze
 import Classes.Robot
@@ -9,36 +8,34 @@ from Classes.Position import Position
 from Classes.Item import Item
 from Classes.Ship import Ship
 from Classes.Oil import Oil
+from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 
-class UniformCost(Breadth_First):
+class Avara(UniformCost):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles,
                  mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles,
                          mainMaze)
-
-    def costNextMovement(self, nextPosition):
-        cost = 1
-        elementOnNextPosition = self.mainMaze.getElement(nextPosition)
-        typeElement = type(elementOnNextPosition)
-
-        # Item
-        if (typeElement == Item):
-            cost = 1
-
-        # Oil
-        if (typeElement == Oil):
-            if self.firstShip.isRobotDriving(
-            ) or self.secondShip.isRobotDriving():
-                cost = 1
-            else:
-                cost = 4
-
-        # Ship
-        if (typeElement == Ship):
-            cost = 1
-
-        return cost
+    
+    """
+    def get_manhattan_distance(p, q):
+        # sum of absolute difference between coordinates
+        distance = 0
+        for p_i,q_i in zip(p,q):
+            distance += abs(p_i - q_i)
+    
+        return distance
+    
+    def manhattanToBothItems(self, nexPosition):
+        to_first_item = self.get_manhattan_distance(nexPosition, self.first_Goal)
+        to_second_item = self.get_manhattan_distance(nexPosition, self.second_Goal)
+        return (to_first_item, to_second_item)
+    
+    def minDistance(self, nexPosition):
+        distances_to_both_items = self.manhattanToBothItems(nexPosition)
+        distances_to_both_items.sort()
+        return distances_to_both_items[0]
+    """
 
     #Override
     def analizeMove(self, currentNode):
@@ -85,7 +82,7 @@ class UniformCost(Breadth_First):
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort(key=lambda node: node.cost) # I sort by cost, fto get always the one of the minor cost
+            stack.sort(key=lambda node: node.getMinDistance(self.first_Goal, self.second_Goal)) # I sort by manhattan, to get always the one of the minor distance
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 
