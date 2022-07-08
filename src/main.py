@@ -20,6 +20,7 @@ from ReadTest import *
 from RobotVisualization import *
 from SearchAlgorithms.UninformedSearch import BreadthFirst
 from SearchAlgorithms.UninformedSearch import UniformCost
+from SearchAlgorithms.UninformedSearch import DepthFirst
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
@@ -95,7 +96,7 @@ def main():
     breadth_First.report(path_breadth)
     
     """
-
+    """"
     #UNIFORM COST
 
     uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items,
@@ -104,5 +105,12 @@ def main():
     uniform_cost.giveDirectionsRobot(path_cost, anim)
     uniform_cost.report(path_cost)
 
+    """
+    # DEPTH FIRST
+    depth_First = DepthFirst.DepthFirst(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
+    path_depth = depth_First.constructPath()
+    depth_First.giveDirectionsRobot(path_depth, anim)
+    depth_First.report(path_depth)
+    
 
 main()

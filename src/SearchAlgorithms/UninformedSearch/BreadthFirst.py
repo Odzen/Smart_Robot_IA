@@ -138,45 +138,34 @@ class Breadth_First(object):
             positionUp = Position(currentNode.getPosition().getX() - 1,
                                   currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(
-                    positionUp, currentNode) or self.justCatchedItem(
-                        currentNode) or self.justCatchedShip(currentNode):
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionUp, 1, "Up")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleDown(currentNode.getPosition()):
-            positionDown = Position(currentNode.getPosition().getX() + 1,
-                                    currentNode.getPosition().getY())
+            positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(
-                    positionDown, currentNode) or self.justCatchedItem(
-                        currentNode) or self.justCatchedShip(currentNode):
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionDown, 1, "Down")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
-            positionLeft = Position(currentNode.getPosition().getX(),
-                                    currentNode.getPosition().getY() - 1)
+            positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(
-                    positionLeft, currentNode) or self.justCatchedItem(
-                        currentNode) or self.justCatchedShip(currentNode):
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionLeft, 1, "Left")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
-            positionRight = Position(currentNode.getPosition().getX(),
-                                     currentNode.getPosition().getY() + 1)
+            positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(
-                    positionRight, currentNode) or self.justCatchedItem(
-                        currentNode) or self.justCatchedShip(currentNode):
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 currentNode.addChild(positionRight, 1, "Right")
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
