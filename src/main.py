@@ -86,13 +86,13 @@ def main():
     # RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, optional : delay)
     anim = RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay)
     
-    """
+    
     # BREADTH FIRST
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path_breadth = breadth_First.constructPath()
     breadth_First.giveDirectionsRobot(path_breadth, anim)
     breadth_First.report(path_breadth)
-    """
+    
     
     """
     # DEPTH FIRST
@@ -111,14 +111,14 @@ def main():
     uniform_cost.report(path_cost)
     """
     
-    
+    """
     # AVARA
     avara = Avara.Avara(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     avara_path = avara.constructPath()
     print(avara_path)
     avara.giveDirectionsRobot(avara_path, anim)
     avara.report(avara_path)
-    
+    """
     
     """
     #A_STAR
