@@ -9,7 +9,7 @@ class Avara(UniformCost):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 
-    #Override, main algorithm
+    #Override, MAIN algorithm
     # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use manhattan for sorting
     def getItems(self, initialNode):
         stack = []

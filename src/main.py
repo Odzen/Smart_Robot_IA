@@ -87,31 +87,27 @@ def main():
     
     """
     # BREADTH FIRST
-    
     breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path_breadth = breadth_First.constructPath()
     breadth_First.giveDirectionsRobot(path_breadth, anim)
     breadth_First.report(path_breadth)
     """
     
-    
+    """
     # DEPTH FIRST
     depth_First = DepthFirst.DepthFirst(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path_depth = depth_First.constructPath()
     print(path_depth)
     depth_First.giveDirectionsRobot(path_depth, anim)
     depth_First.report(path_depth)
-    
+    """
     
     """
     #UNIFORM COST
-
-    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items,
-                                           oils, obstacles, mainMaze)
+    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     path_cost = uniform_cost.constructPath()
     uniform_cost.giveDirectionsRobot(path_cost, anim)
     uniform_cost.report(path_cost)
-
     """
     
     """
@@ -123,13 +119,13 @@ def main():
     avara.report(avara_path)
     """
     
-    """
+    
     #A_STAR
     a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     a_star_path = a_star.constructPath()
     print(a_star_path)
     a_star.giveDirectionsRobot(a_star_path, anim)
     a_star.report(a_star_path)
-    """
+    
 
 main()
