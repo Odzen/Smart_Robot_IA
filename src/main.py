@@ -114,22 +114,22 @@ def main():
     depth_First.report(path_depth)
     """
     
-    
+    """
     # AVARA
     avara = Avara.Avara(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     avara_path = avara.constructPath()
     print(avara_path)
     avara.giveDirectionsRobot(avara_path, anim)
     avara.report(avara_path)
-    
-    
     """
+    
+    
     #A_STAR
     a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
     a_star_path = a_star.constructPath()
     print(a_star_path)
     a_star.giveDirectionsRobot(a_star_path, anim)
     a_star.report(a_star_path)
-    """
+    
 
 main()
