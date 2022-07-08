@@ -46,7 +46,7 @@ class UniformCost(Breadth_First):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
 
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionUp,self.costNextMovement(positionUp), "Up")
+                currentNode.addChild(positionUp,self.costNextMovement(positionUp), "Up", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -55,7 +55,7 @@ class UniformCost(Breadth_First):
             positionDown = Position(currentNode.getPosition().getX() + 1, currentNode.getPosition().getY())
 
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionDown, self.costNextMovement(positionDown),"Down")
+                currentNode.addChild(positionDown, self.costNextMovement(positionDown),"Down", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -64,7 +64,7 @@ class UniformCost(Breadth_First):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
 
             if self.isRootNode(currentNode) or self.isPreviousOne( positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionLeft,self.costNextMovement(positionLeft),"Left")
+                currentNode.addChild(positionLeft,self.costNextMovement(positionLeft),"Left", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -73,7 +73,7 @@ class UniformCost(Breadth_First):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
 
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionRight,self.costNextMovement(positionRight),"Right")
+                currentNode.addChild(positionRight,self.costNextMovement(positionRight),"Right", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())

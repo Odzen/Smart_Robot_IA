@@ -23,7 +23,7 @@ class Breadth_First(object):
         self.first_Goal = self.items[0].getItemPosition()
         self.second_Goal = self.items[1].getItemPosition()
         self.initialPosition = self.robot.getRobotPosition()
-        self.nodeRoot = Node(None, self.initialPosition, 0, 0, None)
+        self.nodeRoot = Node(None, self.initialPosition, 0, 0, None, robot)
         self.path = []
         self.itemsRecollected = []
         self.expanded_nodes = 0
@@ -63,6 +63,9 @@ class Breadth_First(object):
         if len(self.itemsRecollected) == 2:
             print("All Items Recollected!! \n")
         return self.itemsRecollected
+    
+    def getNumberItemsRecollected(self):
+        return len(self.itemsRecollected)
 
     def getPositionItemsRecollected(self):
         positions = []
@@ -139,7 +142,7 @@ class Breadth_First(object):
                                   currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionUp, 1, "Up")
+                currentNode.addChild(positionUp, 1, "Up", self.robot, self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -148,7 +151,7 @@ class Breadth_First(object):
             positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionDown, 1, "Down")
+                currentNode.addChild(positionDown, 1, "Down", self.robot, self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -157,7 +160,7 @@ class Breadth_First(object):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionLeft, 1, "Left")
+                currentNode.addChild(positionLeft, 1, "Left", self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -166,7 +169,7 @@ class Breadth_First(object):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionRight, 1, "Right")
+                currentNode.addChild(positionRight, 1, "Right", self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())

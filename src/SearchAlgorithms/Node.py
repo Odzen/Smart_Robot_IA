@@ -18,7 +18,7 @@ Position in Maze (x,y)
 
 
 class Node(object):
-    def __init__(self, father, position, depth, cost, operator):
+    def __init__(self, father, position, depth, cost, operator, itemsRecollected):
         self.father = father
         self.position = position
         self.children = []
@@ -28,6 +28,7 @@ class Node(object):
         self.heuristic = 0 # Heuristic for a_star
         self.operator = operator
         self.isGoal = False
+        self.itemsRecollected = itemsRecollected
 
     def getChildren(self):
         return self.children
@@ -43,6 +44,10 @@ class Node(object):
 
     def getCost(self):
         return self.cost
+    
+    # Helps to know the current state of the robot and the items recolected by him in this node owned by a tree
+    def getStateItems(self):
+        return self.itemsRecollected
     
     def getManhattan(self):
         return self.manhattan
@@ -88,9 +93,9 @@ class Node(object):
         else:
             self.isGoal = True
 
-    def addChild(self, position, costChild, operator):
+    def addChild(self, position, costChild, operator, robot):
         newChildren = Node(self, position, self.depth + 1,
-                           self.cost + costChild, operator)
+                           self.cost + costChild, operator, robot)
         self.children.append(newChildren)
         return newChildren
 
