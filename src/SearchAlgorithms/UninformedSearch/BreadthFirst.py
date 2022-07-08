@@ -8,6 +8,9 @@ from ..Node import Node
 import Classes.Maze
 import Classes.Robot
 from Classes.Position import Position
+from Classes.Item import Item
+from Classes.Ship import Ship
+from Classes.Oil import Oil
 
 
 class Breadth_First(object):
@@ -124,6 +127,31 @@ class Breadth_First(object):
             return True
         else:
             return False
+    
+    # Aux function that I use in other algorithms, since this class is inherited. I use this aux function in this class too, but at the end, it doesn't matter
+    # because in the main algorithm 'getItems' I don't compare the costs
+    def costNextMovement(self, nextPosition):
+        cost = 1
+        elementOnNextPosition = self.mainMaze.getElement(nextPosition)
+        typeElement = type(elementOnNextPosition)
+
+        # Item
+        if (typeElement == Item):
+            cost = 1
+
+        # Oil
+        if (typeElement == Oil):
+            if self.firstShip.isRobotDriving(
+            ) or self.secondShip.isRobotDriving():
+                cost = 1
+            else:
+                cost = 4
+
+        # Ship
+        if (typeElement == Ship):
+            cost = 1
+
+        return cost
 
     """
     Checks if there is an obstacle in any direction
@@ -138,11 +166,11 @@ class Breadth_First(object):
 
     def analizeMove(self, currentNode):
         if not self.robot.isObstacleUp(currentNode.getPosition()):
-            positionUp = Position(currentNode.getPosition().getX() - 1,
-                                  currentNode.getPosition().getY())
+            positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionUp, 1, "Up", self.robot, self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
+                # I give the cost to the next movement to the child
+                currentNode.addChild(positionUp, self.costNextMovement(positionUp) , "Up", self.getNumberItemsRecollected())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -151,8 +179,8 @@ class Breadth_First(object):
             positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionDown, 1, "Down", self.robot, self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
-                self.increaseByOneExpandedNodes()
+                # I give the cost to the next movement to the child
+                currentNode.addChild(positionDown, self.costNextMovement(positionDown) , "Down", self.getNumberItemsRecollected())
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
@@ -160,7 +188,8 @@ class Breadth_First(object):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionLeft, 1, "Left", self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
+                # I give the cost to the next movement to the child
+                currentNode.addChild(positionLeft, self.costNextMovement(positionLeft) , "Left", self.getNumberItemsRecollected())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -169,12 +198,13 @@ class Breadth_First(object):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionRight, 1, "Right", self.getItemsRecollected()) # Set cost as 1, because it doesn't matter in this algorithm
+                # I give the cost to the next movement to the child
+                currentNode.addChild(positionRight, self.costNextMovement(positionRight) , "Right", self.getNumberItemsRecollected())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
-    # main algorithm
+    # MAIN algorithm
     def getItems(self, initialNode):
         stack = []
         stack.append(initialNode)

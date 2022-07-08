@@ -45,7 +45,7 @@ class Node(object):
     def getCost(self):
         return self.cost
     
-    # Helps to know the current state of the robot and the items recolected by him in this node owned by a tree
+    # Helps to know the current state of the items recolected by the robot in this node owned by a tree
     def getStateItems(self):
         return self.itemsRecollected
     
@@ -81,6 +81,7 @@ class Node(object):
         self.min_manhattan = distances_to_both_items[0]
         return self.min_manhattan
     
+    # h = g + m --> cost + Manhattan
     def getHeuristic(self, positionFirstItem, positionSecondItem):
         return self.getCost() + self.getMinDistance(positionFirstItem, positionSecondItem)
 
@@ -93,9 +94,9 @@ class Node(object):
         else:
             self.isGoal = True
 
-    def addChild(self, position, costChild, operator, robot):
+    def addChild(self, position, costChild, operator, items):
         newChildren = Node(self, position, self.depth + 1,
-                           self.cost + costChild, operator, robot)
+                           self.cost + costChild, operator, items)
         self.children.append(newChildren)
         return newChildren
 

@@ -23,7 +23,7 @@ class Avara(UniformCost):
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort(key=lambda node: node.getMinDistance(self.first_Goal, self.second_Goal)) # I sort by manhattan, to get always the one of the minor distance
+            stack.sort(key=lambda node: node.getMinDistance(self.first_Goal, self.second_Goal)) # CHANGE HERE COMPARED TO SUPER -> I sort by manhattan, to get always the one with minor distance
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
 

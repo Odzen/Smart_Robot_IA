@@ -23,8 +23,10 @@ class DepthFirst(Breadth_First):
             positionUp = Position(currentNode.getPosition().getX() - 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                if not self.wasVisited(currentNode):        
-                    currentNode.addChild(positionUp, 1, "Up", self.getNumberItemsRecollected())
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
+                if not self.wasVisited(currentNode):
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionUp, self.costNextMovement(positionUp), "Up", self.getNumberItemsRecollected())
                     self.increaseByOneExpandedNodes()
                     # Check and set depth
                     self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -33,8 +35,10 @@ class DepthFirst(Breadth_First):
             positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
                 if not self.wasVisited(currentNode):
-                    currentNode.addChild(positionDown, 1, "Down", self.getNumberItemsRecollected())
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionDown,  self.costNextMovement(positionDown), "Down", self.getNumberItemsRecollected())
                     self.increaseByOneExpandedNodes()
                     # Check and set depth
                     self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -43,8 +47,10 @@ class DepthFirst(Breadth_First):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
                 if not self.wasVisited(currentNode):
-                    currentNode.addChild(positionLeft, 1, "Left", self.getNumberItemsRecollected())
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionLeft, self.costNextMovement(positionLeft) , "Left", self.getNumberItemsRecollected())
                     self.increaseByOneExpandedNodes()
                     # Check and set depth
                     self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -53,8 +59,10 @@ class DepthFirst(Breadth_First):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
                 if not self.wasVisited(currentNode):
-                    currentNode.addChild(positionRight, 1, "Right", self.getNumberItemsRecollected())
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionRight, self.costNextMovement(positionRight) , "Right", self.getNumberItemsRecollected())
                     self.increaseByOneExpandedNodes()
                     # Check and set depth
                     self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -62,8 +70,8 @@ class DepthFirst(Breadth_First):
     def wasVisited(self, currentNode):
         father_node = currentNode.getFather()
         while father_node != None:
-            print("Items in this node,", str(currentNode), "are: ", currentNode.getStateItems())
-            print("Items in its father node,", str(father_node), "are: ", father_node.getStateItems())
+            #print("Items in this node,", str(currentNode), "are: ", currentNode.getStateItems())
+            #print("Items in its father node,", str(father_node), "are: ", father_node.getStateItems())
             if (currentNode.position == father_node.position) and (currentNode.getStateItems() == father_node.getStateItems()):
                 print("Was visited")
                 return True
@@ -80,10 +88,7 @@ class DepthFirst(Breadth_First):
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
             currentNode = stack.pop(0)
-            
-            print(currentNode)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
-            
             
             if self.isAllItemsRecollected():
                 print(self.getItemsRecollected())
@@ -105,5 +110,5 @@ class DepthFirst(Breadth_First):
 
             else:
                 self.analizeMove(currentNode)
-                stack = currentNode.getChildren() + stack #Insert children on front to follow the Depth First dynamic
+                stack = currentNode.getChildren() + stack # CHANGE HERE COMPARED TO SUPER -> Insert children on front to follow the Depth First dynamic
     

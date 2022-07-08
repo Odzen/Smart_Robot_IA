@@ -17,67 +17,6 @@ class UniformCost(Breadth_First):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles,
                          mainMaze)
 
-    def costNextMovement(self, nextPosition):
-        cost = 1
-        elementOnNextPosition = self.mainMaze.getElement(nextPosition)
-        typeElement = type(elementOnNextPosition)
-
-        # Item
-        if (typeElement == Item):
-            cost = 1
-
-        # Oil
-        if (typeElement == Oil):
-            if self.firstShip.isRobotDriving(
-            ) or self.secondShip.isRobotDriving():
-                cost = 1
-            else:
-                cost = 4
-
-        # Ship
-        if (typeElement == Ship):
-            cost = 1
-
-        return cost
-
-    #Override
-    def analizeMove(self, currentNode):
-        if not self.robot.isObstacleUp(currentNode.getPosition()):
-            positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
-
-            if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionUp,self.costNextMovement(positionUp), "Up", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
-
-        if not self.robot.isObstacleDown(currentNode.getPosition()):
-            positionDown = Position(currentNode.getPosition().getX() + 1, currentNode.getPosition().getY())
-
-            if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionDown, self.costNextMovement(positionDown),"Down", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
-
-        if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
-            positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
-
-            if self.isRootNode(currentNode) or self.isPreviousOne( positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionLeft,self.costNextMovement(positionLeft),"Left", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
-
-        if not self.robot.isObstacleOnRight(currentNode.getPosition()):
-            positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
-
-            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                currentNode.addChild(positionRight,self.costNextMovement(positionRight),"Right", self.robot) # This is the only thing that I change, I give the cost to the next movement to the child
-                self.increaseByOneExpandedNodes()
-                # Check and set depth
-                self.setDepth(currentNode.getChildren()[0].getDepth())
-
     #Override, main algorithm
     # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use the cost for sorting
     def getItems(self, initialNode):
@@ -86,7 +25,7 @@ class UniformCost(Breadth_First):
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
-            stack.sort(key=lambda node: node.cost) # I sort by cost, fto get always the one of the minor cost
+            stack.sort(key=lambda node: node.cost) # CHANGE HERE COMPARED TO SUPER -> I sort by cost, to get always the one with minor cost
             #stack.sort() # I can do it just like this as well, because of the __eq__ method on the Node class
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
