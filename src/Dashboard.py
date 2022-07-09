@@ -9,9 +9,11 @@ from SearchAlgorithms.UninformedSearch import UniformCost
 from SearchAlgorithms.UninformedSearch import DepthFirst
 from SearchAlgorithms.InformedSearch import Avara
 from SearchAlgorithms.InformedSearch import AStar
+import time
+from ReadTest import *
 
 class Dashboard():
-    def __init__(self, root, robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay):
+    def __init__(self, root, robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay, Test):
         self.root=root
         root.title("Smart Robot")
         
@@ -23,6 +25,7 @@ class Dashboard():
         self.obstacles = obstacles
         self.mainMaze = mainMaze
         self.delay = delay
+        self.test = Test
 
         # the width, height and colors are temporary,
         # until we have more of the GUI working.
@@ -68,39 +71,79 @@ class Dashboard():
     def buttonClickBreadth(self):
         # BREADTH FIRST
         breadth_First = BreadthFirst.Breadth_First(self.robot, self.firstShip, self.secondShip, self.items, self.oils, self.obstacles, self.mainMaze)
+        start = time.time()
         path_breadth = breadth_First.constructPath()
+        end = time.time()
+        timeTotalMachine = end - start
+        breadth_First.setTime(timeTotalMachine)
         breadth_First.giveDirectionsRobot(path_breadth, self.canvas)
         breadth_First.report(path_breadth)
+        
+        report = breadth_First.report(path_breadth)
+        readWrite = ReadAndWrite(self.test)
+        readWrite.output(report, "breadth_First")
     
     def buttonClickDepth(self):
         # DEPTH FIRST
         depth_First = DepthFirst.DepthFirst(self.robot, self.firstShip, self.secondShip, self.items, self.oils, self.obstacles, self.mainMaze)
+        start = time.time()
         path_depth = depth_First.constructPath()
+        end = time.time()
+        timeTotalMachine = end - start
+        depth_First.setTime(timeTotalMachine)
         print(path_depth)
         depth_First.giveDirectionsRobot(path_depth, self.canvas)
         depth_First.report(path_depth)
         
+        report = depth_First.report(path_depth)
+        readWrite = ReadAndWrite(self.test )
+        readWrite.output(report, "depth_First")
+        
     def buttonClickUniform(self):    
         #UNIFORM COST
         uniform_cost = UniformCost.UniformCost(self.robot, self.firstShip, self.secondShip, self.items, self.oils, self.obstacles, self.mainMaze)
+        start = time.time()
         path_cost = uniform_cost.constructPath()
+        end = time.time()
+        timeTotalMachine = end - start
+        uniform_cost.setTime(timeTotalMachine)
         uniform_cost.giveDirectionsRobot(path_cost, self.canvas)
         uniform_cost.report(path_cost)
+        
+        report = uniform_cost.report(path_cost)
+        readWrite = ReadAndWrite(self.test)
+        readWrite.output(report, "uniform_cost")
     
     def buttonClickAvara(self):    
         # AVARA
         avara = Avara.Avara(self.robot, self.firstShip, self.secondShip, self.items, self.oils, self.obstacles, self.mainMaze)
+        start = time.time()
         avara_path = avara.constructPath()
+        end = time.time()
+        timeTotalMachine = end - start
+        avara.setTime(timeTotalMachine)
         print(avara_path)
         avara.giveDirectionsRobot(avara_path, self.canvas)
         avara.report(avara_path)
         
+        report = avara.report(avara_path)
+        readWrite = ReadAndWrite(self.test)
+        readWrite.output(report, "avara")
+        
     def buttonClickAStar(self):
         #A_STAR
         a_star = AStar.AStar(self.robot, self.firstShip, self.secondShip, self.items, self.oils, self.obstacles, self.mainMaze)
+        start = time.time()
         a_star_path = a_star.constructPath()
+        end = time.time()
+        timeTotalMachine = end - start
+        a_star.setTime(timeTotalMachine)
         print(a_star_path)
         a_star.giveDirectionsRobot(a_star_path, self.canvas)
-        a_star.report(a_star_path)
+        
+        report = a_star.report(a_star_path)
+        readWrite = ReadAndWrite(self.test)
+        readWrite.output(report, "a_star")
+        
     
         

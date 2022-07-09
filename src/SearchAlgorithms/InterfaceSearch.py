@@ -5,9 +5,6 @@ Interface Search, here are methods that will be used for all the search algorith
 #import sys
 #sys.path.append("..") # Adds higher directory to python modules path.
 from SearchAlgorithms.Node import Node
-from Classes.Item import Item
-from Classes.Ship import Ship
-from Classes.Oil import Oil
 
 
 class InterfaceSearch(object):
@@ -27,6 +24,7 @@ class InterfaceSearch(object):
         self.itemsRecollected = []
         self.expanded_nodes = 0
         self.depth = 0
+        self.time = 0
 
     def getFirst_Goal(self):
         return self.first_Goal
@@ -57,6 +55,12 @@ class InterfaceSearch(object):
 
     def getPath(self):
         return self.path[::-1]
+
+    def getTime(self):
+        return self.time
+
+    def setTime(self, new_time):
+        self.time = new_time
 
     def getItemsRecollected(self):
         if len(self.itemsRecollected) == 2:
@@ -123,35 +127,6 @@ class InterfaceSearch(object):
         else:
             return False
     
-        # Aux function that I use in other algorithms, since this class is inherited. I use this aux function in this class too, but at the end, it doesn't matter
-    # because in the main algorithm 'getItems' I don't compare the costs
-    def costNextMovement(self, nextPosition):
-            
-        cost = 1
-        elementOnNextPosition = self.mainMaze.getElement(nextPosition)
-        typeElement = type(elementOnNextPosition)
-
-        # Item
-        if (typeElement == Item):
-            cost = 1
-
-        # Oil
-        if (typeElement == Oil):
-            print("Robot en primera nave", self.firstShip.isRobotDriving())
-            print("Robot en segund nave", self.secondShip.isRobotDriving())
-            if self.firstShip.isRobotDriving() or self.secondShip.isRobotDriving():
-                cost = 1
-            else:
-                cost = 4
-                
-        # Ship
-        if (typeElement == Ship):
-            cost = 1
-
-
-        return cost
-    
-
     def giveDirectionsRobot(self, path, anim):
         for operation in path:
             if operation == "Left":
@@ -174,7 +149,10 @@ class InterfaceSearch(object):
 
     def report(self, path):
         print("REPORT: ", "\n")
-        print("Tree: \n", self.nodeRoot.subTreeCost(), "\n")
+        # UNNCOMENT THIS LINE IF YOU WANT TO SEE THE TREE IN THE REPORT
+        #print("Tree: \n", self.nodeRoot.subTreeCost(), "\n")
         print("Final Path: ", path)
         print("Tree Depth: ", self.getDepth())
         print("Nodes expanded: ", self.getExpandedNodes(), "\n")
+        print("Computation time : ", self.getTime(), "\n")
+        return path, self.getDepth(), self.getExpandedNodes(), self.getTime()

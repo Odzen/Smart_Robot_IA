@@ -11,9 +11,9 @@ class Avara(UniformCost):
 
     #Override, MAIN algorithm
     # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use manhattan for sorting
-    def getItems(self, initialNode):
+    def getItems(self):
         stack = []
-        stack.append(initialNode)
+        stack.append(self.nodeRoot)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
@@ -41,3 +41,7 @@ class Avara(UniformCost):
             else:
                 self.analizeMove(currentNode)
                 stack.extend(currentNode.getChildren())
+                
+    def constructPath(self):
+            path = self.getItems()
+            return path

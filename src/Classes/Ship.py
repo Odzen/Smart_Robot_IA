@@ -42,12 +42,10 @@ class Ship(object):
         return self.position
 
     def decreaseFuelByOne(self):
+        self.fuel -= 1
         if self.fuel == 0:
             self.setShipState = False
             self.setShipRobotDriving(False)
-        else:
-            self.setShipState = True
-            self.fuel -= 1
 
     def __str__(self):
         return "[" + str(

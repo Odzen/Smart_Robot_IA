@@ -180,7 +180,6 @@ class Robot1(object):
                     self.position.getX(), newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
-                print("Moved Left")
 
                 if (self.smellItem()):
                     print("Item close!")
@@ -206,7 +205,6 @@ class Robot1(object):
                     newX, self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
-                print("Moved Up")
 
                 if (self.smellItem()):
                     print("Item close!!")
@@ -233,7 +231,6 @@ class Robot1(object):
                     newX, self.position.getY())
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
-                print("Moved Down")
 
                 if (self.smellItem()):
                     print("Item close!!")
@@ -259,7 +256,6 @@ class Robot1(object):
                     self.position.getX(), newY)
                 self.maze.setElement(newPosition, 2)
                 self.setAgentPosition(newPosition)
-                print("Moved Right")
 
                 if (self.smellItem()):
                     print("Item close!!")

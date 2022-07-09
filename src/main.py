@@ -91,7 +91,7 @@ def main():
     root=tk.Tk()
     root.geometry("1000x600")
     root.title("Smart Robot")
-    dashboard = Dashboard(root, robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay)
+    dashboard = Dashboard(root, robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay, Test)
     root.mainloop()
     # RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, optional : delay)
     #anim = RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, root, delay)
