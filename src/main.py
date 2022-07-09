@@ -20,10 +20,15 @@ from SearchAlgorithms.UninformedSearch import UniformCost
 from SearchAlgorithms.UninformedSearch import DepthFirst
 from SearchAlgorithms.InformedSearch import Avara
 from SearchAlgorithms.InformedSearch import AStar
+import tkinter as tk
+from tkinter import ttk
+from Dashboard import Dashboard
+
 
 #import sys
 #sys.path.append(1, '/SearchAlgorithms')
 #import ia_algorithms
+
 
 
 def transformData(width, height, lines):
@@ -82,51 +87,16 @@ def main():
     readWrite = ReadAndWrite(Test)
     width, height, lines = readWrite.input()
     robot, firstShip, secondShip, items, oils, obstacles, mainMaze = transformData(width, height, lines)
-
+    
+    root=tk.Tk()
+    root.geometry("1000x600")
+    root.title("Smart Robot")
+    dashboard = Dashboard(root, robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay, Test)
+    root.mainloop()
     # RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, optional : delay)
-    anim = RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, delay)
+    #anim = RobotVisualization(robot, firstShip, secondShip, items, oils,obstacles, mainMaze, root, delay)
     
     
-    # BREADTH FIRST
-    breadth_First = BreadthFirst.Breadth_First(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path_breadth = breadth_First.constructPath()
-    breadth_First.giveDirectionsRobot(path_breadth, anim)
-    breadth_First.report(path_breadth)
-    
-    
-    """
-    # DEPTH FIRST
-    depth_First = DepthFirst.DepthFirst(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path_depth = depth_First.constructPath()
-    print(path_depth)
-    depth_First.giveDirectionsRobot(path_depth, anim)
-    depth_First.report(path_depth)
-    """
-    
-    """
-    #UNIFORM COST
-    uniform_cost = UniformCost.UniformCost(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    path_cost = uniform_cost.constructPath()
-    uniform_cost.giveDirectionsRobot(path_cost, anim)
-    uniform_cost.report(path_cost)
-    """
-    
-    """
-    # AVARA
-    avara = Avara.Avara(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    avara_path = avara.constructPath()
-    print(avara_path)
-    avara.giveDirectionsRobot(avara_path, anim)
-    avara.report(avara_path)
-    """
-    
-    """
-    #A_STAR
-    a_star = AStar.AStar(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
-    a_star_path = a_star.constructPath()
-    print(a_star_path)
-    a_star.giveDirectionsRobot(a_star_path, anim)
-    a_star.report(a_star_path)
-    """
+
 
 main()

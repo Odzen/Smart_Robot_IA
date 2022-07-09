@@ -18,7 +18,7 @@ Position in Maze (x,y)
 
 
 class Node(object):
-    def __init__(self, father, position, depth, cost, operator, itemsRecollected):
+    def __init__(self, father, position, depth, cost, operator, itemsRecollected, first_ship, second_ship):
         self.father = father
         self.position = position
         self.children = []
@@ -28,6 +28,8 @@ class Node(object):
         self.heuristic = 0 # Heuristic for a_star
         self.operator = operator
         self.isGoal = False
+        self.first_ship = first_ship
+        self.second_ship = second_ship
         self.itemsRecollected = itemsRecollected
 
     def getChildren(self):
@@ -50,13 +52,27 @@ class Node(object):
         return self.itemsRecollected
     
     def getManhattan(self):
-        return self.manhattan
+        return self.min_manhattan
 
     def getOperator(self):
         return self.operator
 
     def getDepth(self):
         return self.depth
+    
+    def get_first_ship(self):
+        return self.first_ship
+    
+    def get_second_ship(self):
+        return self.second_ship
+    
+    def analizeFirstShip(self):
+        if self.position == self.first_ship.getShipPosition():
+            return True
+            
+    def analizeSecondShip(self):
+        if self.position == self.first_ship.getShipPosition():
+            return True
 
     def getHeight(self):
         if not self.children:
@@ -94,9 +110,8 @@ class Node(object):
         else:
             self.isGoal = True
 
-    def addChild(self, position, costChild, operator, items):
-        newChildren = Node(self, position, self.depth + 1,
-                           self.cost + costChild, operator, items)
+    def addChild(self, position, costChild, operator, items, first_ship, second_ship):
+        newChildren = Node(self, position, self.depth + 1,  self.cost + costChild, operator, items, first_ship, second_ship)
         self.children.append(newChildren)
         return newChildren
 
@@ -123,10 +138,10 @@ class Node(object):
         """
         if self.isGoal:
             ret = "\t" * level + repr(str(self.position)) + "* " + (str(
-                self.operator)) + "-- Cost:" + str(self.cost) + "\n"
+                self.operator)) + "-- Cost:" + str(self.cost) + "-- Ship_1:" + str(self.first_ship) + "-- Ship_2:" + str(self.second_ship) + "\n"
         else:
             ret = "\t" * level + repr(str(self.position)) + " " + (str(
-                self.operator)) + "-- Cost:" + str(self.cost) + "\n"
+                self.operator)) + "-- Cost:" + str(self.cost) + "-- Ship_1:" + str(self.first_ship) + "-- Ship_2:" + str(self.second_ship) + "\n"
         for child in self.children:
             ret += child.subTreeCost(level + 1)
         return ret

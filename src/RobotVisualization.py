@@ -19,7 +19,9 @@ class RobotVisualization(object):
                  oils,
                  obstacles,
                  mainMaze,
-                 delay=1):
+                 root,
+                 delay=1
+                 ):
         "Initializes a visualization with the specified parameters."
         # Number of seconds to pause after each frame
         self.delay = delay
@@ -34,12 +36,13 @@ class RobotVisualization(object):
         self.items = items
         self.oils = oils
         self.obstacles = obstacles
+        self.root = root
 
         # Initialize a drawing surface
-        self.master = Tk()  # Window
-        self.w = Canvas(self.master, width=500, height=500)  # Canvas widget
+        self.w = Canvas(self.root, width=800, height=800,background='white')
+        
         self.w.pack()  # To add the widget w to the window
-        self.master.update()
+        self.root.update()
 
         # Draw a backing and lines
         x1, y1 = self._map_coords(0, 0)
@@ -79,22 +82,22 @@ class RobotVisualization(object):
         self.time = 0
 
         # Draw Obstacles
-        self._draw_obstacles(obstacles)
+        self._draw_obstacles(self.obstacles)
 
         # Draw Oils
-        self._draw_oils(oils)
+        self._draw_oils(self.oils)
 
         # Draw Items
-        self._draw_items(items)
+        self._draw_items(self.items)
 
         # Draw Ships
-        self._draw_ships(firstShip, secondShip)
+        self._draw_ships(self.firstShip, self.secondShip)
 
         # Draw Robot
-        robotPosition = robot.getRobotPosition()
+        robotPosition = self.robot.getRobotPosition()
         self._draw_robot(robotPosition)
 
-        self.master.update()
+        self.root.update()
 
     def _map_coords(self, x, y):
         "Maps grid positions to window positions (in pixels)."
@@ -153,7 +156,6 @@ class RobotVisualization(object):
         "Returns rectangles representing the ships with the specified parameters."
 
         #Ship 1
-
         if not firstShip.isRobotDriving() and firstShip.getShipState():
             firstShipPosition = firstShip.getShipPosition()
             xShip1, yShip1 = firstShipPosition.getX(), firstShipPosition.getY()
@@ -178,6 +180,9 @@ class RobotVisualization(object):
                                     y2Ship2,
                                     fill="purple")
 
+    def getW(self):
+        return self.w
+    
     def update(self):
         "Redraws the visualization with the specified params"
         self.w.delete("all")
@@ -235,7 +240,7 @@ class RobotVisualization(object):
                                            self.robot.getCollectedItems(),
                                            self.firstShip.getFuel(),
                                            self.secondShip.getFuel()))
-        self.master.update()
+        self.root.update()
         time.sleep(self.delay)
 
     def done(self):

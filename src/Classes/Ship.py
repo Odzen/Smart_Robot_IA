@@ -15,15 +15,16 @@ class Ship(object):
         self.fuel = fuel
         self.state = True  #True if the Ship is still on the Maze, False if the Ship is out of fuel
         self.robotDriving = False
+        self.active = False
 
     def isRobotDriving(self):
         return self.robotDriving
 
-    def setShipRobotDriving(self):
-        if not self.robotDriving:
-            self.robotDriving = True
-        else:
-            self.robotDriving = False
+    def setShipRobotDriving(self, active):
+        self.robotDriving = active
+    
+    def getMaze(self):
+        return self.maze
 
     def getShipState(self):
         return self.state
@@ -47,13 +48,13 @@ class Ship(object):
         return self.position
 
     def decreaseFuelByOne(self):
-        self.fuel -= 1
         if self.fuel == 0:
             self.setShipState()
-            self.setShipRobotDriving()
+            self.setShipRobotDriving(False)
+        self.fuel -= 1
 
     def __str__(self):
-        return "There is a Ship here[" + str(
-            self.position.getX()) + " , " + str(
-                self.position.getY()) + "]" + " with " + str(
-                    self.getFuel()) + " of fuel"
+        return "[" + str(
+            self.position.getX()) + "," + str(
+                self.position.getY()) + "]" + "/Fuel: " + str(
+                    self.getFuel()) + "/driving: " + str(self.isRobotDriving())

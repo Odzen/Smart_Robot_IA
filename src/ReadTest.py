@@ -30,11 +30,17 @@ class ReadAndWrite(object):
             height = len(lines[0])
             return width, height, lines
 
-    def output(self, output, testNumber):
+    def output(self, output, name_file):
         '''
         output()
         Function to write over the file as requested in the project.
         The file name is changed in the global variable "nameToWrite". (Do not modify method!)
+        
+        It will print in the followin order:
+         - Final Path
+         - Tree Depth
+         - Nodes Expanded
+         - Computation Time
         '''
 
         lines = output
@@ -43,6 +49,6 @@ class ReadAndWrite(object):
             toWrite += "\n" + str(line)
 
         with open(
-                "../MazesTests/out/" + self.nameToWrite + self.testNumber +
+                "Reports/" + name_file + str(self.testNumber) +
                 ".txt", "w") as f:
             f.write(toWrite)

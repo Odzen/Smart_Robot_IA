@@ -25,12 +25,14 @@ class Breadth_First(InterfaceSearch):
     """
 
     def analizeMove(self, currentNode):
+    
+                
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionUp, self.costNextMovement(positionUp) , "Up", self.getNumberItemsRecollected())
+                currentNode.addChild(positionUp, 1 , "Up", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -38,18 +40,22 @@ class Breadth_First(InterfaceSearch):
         if not self.robot.isObstacleDown(currentNode.getPosition()):
             positionDown = Position(currentNode.getPosition().getX() + 1,currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
+            print("ship: ", self.justCatchedShip(currentNode))
+            print("item: ", self.justCatchedItem(currentNode))
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionDown, self.costNextMovement(positionDown) , "Down", self.getNumberItemsRecollected())
+                currentNode.addChild(positionDown, 1 , "Down", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
-
+        
         if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
             positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
             # If that checks --> root or avoid turn back
+            print("ship: ", self.justCatchedShip(currentNode))
+            print("item: ", self.justCatchedItem(currentNode))
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionLeft, self.costNextMovement(positionLeft) , "Left", self.getNumberItemsRecollected())
+                currentNode.addChild(positionLeft, 1, "Left", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -57,23 +63,29 @@ class Breadth_First(InterfaceSearch):
         if not self.robot.isObstacleOnRight(currentNode.getPosition()):
             positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
             # If that checks --> root or avoid turn back
+            print("ship: ", self.justCatchedShip(currentNode))
+            print("item: ", self.justCatchedItem(currentNode))
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionRight, self.costNextMovement(positionRight) , "Right", self.getNumberItemsRecollected())
+                currentNode.addChild(positionRight, 1 , "Right", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
     # MAIN algorithm
-    def getItems(self, initialNode):
+    def getItems(self):
         stack = []
-        stack.append(initialNode)
+        stack.append(self.nodeRoot)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
             currentNode = stack.pop(0)
             currentNode.analizeGoal(temp_First_goal, temp_Second_goal)
-
+            
+            # Check if the currentNode is a ship, so I set the ship to active
+            # self.analizeShip(currentNode)
+            
+            # Check if the robot collected all the items
             if self.isAllItemsRecollected():
                 return self.findPath(self.getItemsRecollected()[1]) # Gets the second element, because this is the final one. The first one [0] is the path to the first item founded
 
@@ -94,8 +106,9 @@ class Breadth_First(InterfaceSearch):
             else:
                 self.analizeMove(currentNode)
                 stack.extend(currentNode.getChildren())
+                
+    def constructPath(self):
+        path = self.getItems()
+        return path
     
 
-    def constructPath(self):
-        path = self.getItems(self.nodeRoot)
-        return path

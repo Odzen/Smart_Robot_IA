@@ -3,17 +3,18 @@ A* Algorithm
 """
 from Classes.Position import Position
 from SearchAlgorithms.InformedSearch.Avara import Avara
+from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 
-class AStar(Avara):
+class AStar(UniformCost):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 
     #Override, MAIN algorithm
     # The only line that I change here is the sorting of the slack before getting the current node with pop. Here I use the heuristic for sorting
-    def getItems(self, initialNode):
+    def getItems(self):
         stack = []
-        stack.append(initialNode)
+        stack.append(self.nodeRoot)
         temp_First_goal = self.first_Goal
         temp_Second_goal = self.second_Goal
         while len(stack) != 0:
@@ -41,3 +42,7 @@ class AStar(Avara):
             else:
                 self.analizeMove(currentNode)
                 stack.extend(currentNode.getChildren())
+                
+    def constructPath(self):
+            path = self.getItems()
+            return path
