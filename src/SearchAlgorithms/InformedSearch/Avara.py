@@ -2,10 +2,10 @@
 Avara Algorithm
 """
 from Classes.Position import Position
-from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
+from SearchAlgorithms.UninformedSearch.BreadthFirst import Breadth_First
 
 
-class Avara(UniformCost):
+class Avara(Breadth_First):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 

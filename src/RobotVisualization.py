@@ -39,7 +39,7 @@ class RobotVisualization(object):
         self.root = root
 
         # Initialize a drawing surface
-        self.w = Canvas(self.root, width=500, height=500,background='white')
+        self.w = Canvas(self.root, width=800, height=800,background='white')
         
         self.w.pack()  # To add the widget w to the window
         self.root.update()

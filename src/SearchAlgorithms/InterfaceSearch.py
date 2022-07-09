@@ -123,6 +123,7 @@ class InterfaceSearch(object):
     # If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the ships
     def justCatchedShip(self, currentNode):
         if currentNode.getPosition() == self.firstShip.getShipPosition() or currentNode.getPosition() == self.secondShip.getShipPosition():
+            print("JUST CACTHED SHIP")
             return True
         else:
             return False
@@ -150,7 +151,7 @@ class InterfaceSearch(object):
     def report(self, path):
         print("REPORT: ", "\n")
         # UNNCOMENT THIS LINE IF YOU WANT TO SEE THE TREE IN THE REPORT
-        #print("Tree: \n", self.nodeRoot.subTreeCost(), "\n")
+        print("Tree: \n", self.nodeRoot.subTreeCost(), "\n")
         print("Final Path: ", path)
         print("Tree Depth: ", self.getDepth())
         print("Nodes expanded: ", self.getExpandedNodes(), "\n")

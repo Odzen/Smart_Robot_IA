@@ -16,7 +16,7 @@ class UniformCost(Breadth_First):
     
     # Aux function that I use in other algorithms, since this class is inherited. I use this aux function in this class too, but at the end, it doesn't matter
     # because in the main algorithm 'getItems' I don't compare the costs
-    def costNextMovement(self, nextPosition):
+    def costNextMovement(self, nextPosition, currentNode):
             
         cost = 1
         elementOnNextPosition = self.mainMaze.getElement(nextPosition)
@@ -38,28 +38,24 @@ class UniformCost(Breadth_First):
         # Ship
         if (typeElement == Ship):
             cost = 1
-
+            
+            if currentNode.analizeFirstShip() or currentNode.analizeSecondShip():
+                if currentNode.analizeFirstShip():
+                    currentNode.get_first_ship().setShipRobotDriving(True)
+                if currentNode.analizeSecondShip():
+                    currentNode.get_first_ship().setShipRobotDriving(True)
+            
 
         return cost
     def analizeMove(self, currentNode):
         
-        if self.firstShip.isRobotDriving():
-            self.firstShip.decreaseFuelByOne()
-        elif self.secondShip.isRobotDriving():
-            self.secondShip.decreaseFuelByOne()
-        
-        
-        if currentNode.getPosition() == self.firstShip.getShipPosition() and not  self.secondShip.isRobotDriving() and not  self.firstShip.isRobotDriving():
-            self.firstShip.setShipRobotDriving(True)
-        if currentNode.getPosition() == self.secondShip.getShipPosition()  and not  self.firstShip.isRobotDriving() and not  self.secondShip.isRobotDriving():
-            self.secondShip.setShipRobotDriving(True)
         
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1, currentNode.getPosition().getY())
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionUp, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child              
-                currentNode.addChild(positionUp, self.costNextMovement(positionUp) , "Up", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
+                currentNode.addChild(positionUp, self.costNextMovement(positionUp, currentNode) , "Up", self.getNumberItemsRecollected(),  currentNode.get_first_ship() , currentNode.get_second_ship())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -69,7 +65,7 @@ class UniformCost(Breadth_First):
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionDown, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionDown, self.costNextMovement(positionDown) , "Down", self.getNumberItemsRecollected(), self.firstShip, self.secondShip)
+                currentNode.addChild(positionDown, self.costNextMovement(positionDown, currentNode) , "Down", self.getNumberItemsRecollected(),  currentNode.get_first_ship(),currentNode.get_second_ship())
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
 
@@ -78,7 +74,7 @@ class UniformCost(Breadth_First):
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionLeft, self.costNextMovement(positionLeft) , "Left", self.getNumberItemsRecollected(), self.firstShip, self.secondShip)
+                currentNode.addChild(positionLeft, self.costNextMovement(positionLeft, currentNode) , "Left", self.getNumberItemsRecollected(),  currentNode.get_first_ship(),currentNode.get_second_ship())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -88,7 +84,7 @@ class UniformCost(Breadth_First):
             # If that checks --> root or avoid turn back
             if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
                 # I give the cost to the next movement to the child
-                currentNode.addChild(positionRight, self.costNextMovement(positionRight) , "Right", self.getNumberItemsRecollected(), self.firstShip, self.secondShip)
+                currentNode.addChild(positionRight, self.costNextMovement(positionRight, currentNode) , "Right", self.getNumberItemsRecollected(),  currentNode.get_first_ship(), currentNode.get_second_ship())
                 self.increaseByOneExpandedNodes()
                 # Check and set depth
                 self.setDepth(currentNode.getChildren()[0].getDepth())
@@ -129,5 +125,22 @@ class UniformCost(Breadth_First):
                 stack.extend(currentNode.getChildren())
                 
     def constructPath(self):
-            path = self.getItems(self.nodeRoot)
+            path = self.getItems()
             return path
+        
+
+"""
+
+    if currentNode.getPosition() == self.firstShip.getShipPosition():
+        self.firstShip.setShipRobotDriving(True)
+    if currentNode.getPosition() == self.secondShip.getShipPosition():
+        self.secondShip.setShipRobotDriving(True)
+            
+    if self.firstShip.isRobotDriving():
+        self.firstShip.decreaseFuelByOne()
+    elif self.secondShip.isRobotDriving():
+        self.secondShip.decreaseFuelByOne()
+                
+                
+"""
+

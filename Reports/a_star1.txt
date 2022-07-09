@@ -1,5 +1,0 @@
-
-['Left', 'Left', 'Up', 'Up', 'Right', 'Right', 'Right', 'Right', 'Right', 'Down', 'Down', 'Right', 'Down', 'Down', 'Down', 'Right', 'Right', 'Down', 'Down', 'Left', 'Left', 'Left', 'Down', 'Down', 'Right', 'Right', 'Right', 'Right']
-26
-116
-0.0071713924407958984

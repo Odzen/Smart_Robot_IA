@@ -29,6 +29,12 @@ class Ship(object):
     def getShipState(self):
         return self.state
 
+    def setShipState(self):
+        if self.state:
+            self.state = False
+        else:
+            self.state = True
+
     def getCost(self):
         return self.cost
 
@@ -42,13 +48,13 @@ class Ship(object):
         return self.position
 
     def decreaseFuelByOne(self):
-        self.fuel -= 1
         if self.fuel == 0:
-            self.setShipState = False
+            self.setShipState()
             self.setShipRobotDriving(False)
+        self.fuel -= 1
 
     def __str__(self):
         return "[" + str(
             self.position.getX()) + "," + str(
-                self.position.getY()) + "]" + "-Fuel: " + str(
-                    self.getFuel()) + "-driving: " + str(self.isRobotDriving())
+                self.position.getY()) + "]" + "/Fuel: " + str(
+                    self.getFuel()) + "/driving: " + str(self.isRobotDriving())

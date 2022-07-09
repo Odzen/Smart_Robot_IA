@@ -3,9 +3,10 @@ A* Algorithm
 """
 from Classes.Position import Position
 from SearchAlgorithms.InformedSearch.Avara import Avara
+from SearchAlgorithms.UninformedSearch.UniformCost import UniformCost
 
 
-class AStar(Avara):
+class AStar(UniformCost):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         super().__init__(robot, firstShip, secondShip, items, oils, obstacles, mainMaze)
 

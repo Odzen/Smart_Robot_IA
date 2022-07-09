@@ -13,29 +13,6 @@ class DepthFirst(InterfaceSearch):
 
     #Override
     def analizeMove(self, currentNode):
-        if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
-            positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
-            # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
-                if not self.wasVisited(currentNode):
-                    # I give the cost to the next movement to the child
-                    currentNode.addChild(positionLeft, 1 , "Left", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
-                    self.increaseByOneExpandedNodes()
-                    # Check and set depth
-                    self.setDepth(currentNode.getChildren()[0].getDepth())
-                    
-        if not self.robot.isObstacleOnRight(currentNode.getPosition()):
-            positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
-            # If that checks --> root or avoid turn back
-            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
-                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
-                if not self.wasVisited(currentNode):
-                    # I give the cost to the next movement to the child
-                    currentNode.addChild(positionRight, 1 , "Right", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
-                    self.increaseByOneExpandedNodes()
-                    # Check and set depth
-                    self.setDepth(currentNode.getChildren()[0].getDepth())
         
         if not self.robot.isObstacleUp(currentNode.getPosition()):
             positionUp = Position(currentNode.getPosition().getX() - 1,currentNode.getPosition().getY())
@@ -57,6 +34,31 @@ class DepthFirst(InterfaceSearch):
                 if not self.wasVisited(currentNode):
                     # I give the cost to the next movement to the child
                     currentNode.addChild(positionDown,  1, "Down", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
+        
+        
+        if not self.robot.isObstacleOnLeft(currentNode.getPosition()):
+            positionLeft = Position(currentNode.getPosition().getX(),currentNode.getPosition().getY() - 1)
+            # If that checks --> root or avoid turn back
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionLeft, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
+                if not self.wasVisited(currentNode):
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionLeft, 1 , "Left", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
+                    self.increaseByOneExpandedNodes()
+                    # Check and set depth
+                    self.setDepth(currentNode.getChildren()[0].getDepth())
+                    
+        if not self.robot.isObstacleOnRight(currentNode.getPosition()):
+            positionRight = Position(currentNode.getPosition().getX(), currentNode.getPosition().getY() + 1)
+            # If that checks --> root or avoid turn back
+            if self.isRootNode(currentNode) or self.isPreviousOne(positionRight, currentNode) or self.justCatchedItem(currentNode) or self.justCatchedShip(currentNode):
+                # CHANGE HERE COMPARED TO SUPER -> Extra condition that checks if the node was visited, this helps to avoid infinite loops
+                if not self.wasVisited(currentNode):
+                    # I give the cost to the next movement to the child
+                    currentNode.addChild(positionRight, 1 , "Right", self.getNumberItemsRecollected(), self.firstShip , self.secondShip)
                     self.increaseByOneExpandedNodes()
                     # Check and set depth
                     self.setDepth(currentNode.getChildren()[0].getDepth())
