@@ -157,13 +157,13 @@ class Robot1(object):
             if firstShip.getShipPosition(
             ) == nextPosition and not secondShip.isRobotDriving():
                 print("Grabbed Ship 1")
-                firstShip.setShipRobotDriving()
+                firstShip.setShipRobotDriving(True)
 
             # Second Ship
             if secondShip.getShipPosition(
             ) == nextPosition and not firstShip.isRobotDriving():
                 print("Grabbed Ship 2")
-                secondShip.setShipRobotDriving()
+                secondShip.setShipRobotDriving(True)
 
     def moveLeft(self, firstShip, secondShip, items, oils):
         try:
