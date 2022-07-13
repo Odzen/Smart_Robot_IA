@@ -1,0 +1,5 @@
+
+['Down', 'Down', 'Right', 'Right', 'Right', 'Right', 'Up', 'Up', 'Up', 'Up', 'Left', 'Left', 'Left', 'Left', 'Up', 'Up', 'Right', 'Right', 'Right', 'Right']
+20
+25
+0.0018777847290039062

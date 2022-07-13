@@ -1,0 +1,5 @@
+
+['Left', 'Left', 'Left', 'Right', 'Right', 'Right', 'Right', 'Right', 'Right', 'Right', 'Right', 'Down', 'Down', 'Down', 'Down', 'Left', 'Down', 'Left', 'Down', 'Left', 'Left', 'Left', 'Up', 'Up', 'Up']
+80
+6012
+0.492703914642334
