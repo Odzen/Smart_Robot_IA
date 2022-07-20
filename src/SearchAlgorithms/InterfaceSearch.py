@@ -11,6 +11,8 @@ class InterfaceSearch(object):
     def __init__(self, robot, firstShip, secondShip, items, oils, obstacles, mainMaze):
         self.firstShip = firstShip
         self.secondShip = secondShip
+        self.firstShipPosition = self.firstShip.getShipPosition();
+        self.secondShipPosition = self.secondShip.getShipPosition();
         self.oils = oils
         self.obstacles = obstacles
         self.mainMaze = mainMaze
@@ -113,8 +115,7 @@ class InterfaceSearch(object):
     # Aux function for method analizeMove()
     # If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the items
     def justCatchedItem(self, currentNode):
-        if currentNode.getPosition(
-        ) == self.first_Goal or currentNode.getPosition() == self.second_Goal:
+        if currentNode.getPosition() == self.first_Goal or currentNode.getPosition() == self.second_Goal:
             return True
         else:
             return False
@@ -122,8 +123,9 @@ class InterfaceSearch(object):
     # Aux function for method analizeMove()
     # If the position is indeed the previous one, then: The move is allowed only if the robot just catched one of the ships
     def justCatchedShip(self, currentNode):
-        if currentNode.getPosition() == self.firstShip.getShipPosition() or currentNode.getPosition() == self.secondShip.getShipPosition():
-            print("JUST CACTHED SHIP")
+        
+        if currentNode.getPosition() == self.firstShipPosition or currentNode.getPosition() == self.secondShipPosition:
+            #print("JUST CACTHED SHIP")
             return True
         else:
             return False
